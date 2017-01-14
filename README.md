@@ -29,3 +29,13 @@ Run `ng github-pages:deploy` to deploy to Github Pages.
 ## Further help
 
 To get more help on the `angular-cli` use `ng --help` or go check out the [Angular-CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+### Credits:
+
+* Login Seed - [domfarolino](https://github.com/domfarolino/angular2-login-seed)
+
+### To-Do:
+
+* Rewrite error view from EJS to Jade
+
+
