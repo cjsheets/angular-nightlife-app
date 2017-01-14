@@ -1,33 +1,33 @@
-<div class="container-fluid">
+<div id="wrap">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm">
+        <a [routerLink]="['/nl']">
+          <h3 class="page-title"><i class="zmdi zmdi-cocktail"></i> &nbsp; Angular Nightlife</h3>
+        </a>
+      </div>
+      <div class="col-sm text-right" *ngIf="activeRoute == '/nl'">
+        <button class="btn btn-secondary btn-about">
+          &nbsp; About &nbsp;
+        </button>
+      </div>
+      <div class="col-sm text-right" *ngIf="activeRoute == '/nl/search'">
+        <form class="form-inline searchbox" #form="ngForm" (submit)="search(form.value)">
+          <label class="sr-only col-form-label" 
+            for="inlineFormInputGroup">Username</label>
+          <div class="input-group mb-2 mt-3 w-100">
+            <input type="text" class="form-control" name="location"  ngModel
+              id="inlineFormInputGroup" placeholder="address, neighborhood, city, state or zip">
+            <div class="input-group-addon" (click)="search(form.value)">Search</div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div> <!-- / container-fluid -->
 
-  <div class="row">
-    <div class="col-sm">
-      <a [routerLink]="['/nl']">
-        <h3 class="page-title"><i class="zmdi zmdi-cocktail"></i> &nbsp; Angular Nightlife</h3>
-      </a>
-    </div>
-    <div class="col-sm text-right" *ngIf="activeRoute == '/nl'">
-      <button class="btn btn-secondary btn-about">
-        &nbsp; About &nbsp;
-      </button>
-    </div>
-    <div class="col-sm text-right" *ngIf="activeRoute == '/nl/search'">
-      <form class="form-inline searchbox" #form="ngForm" (submit)="search(form.value)">
-        <label class="sr-only col-form-label" 
-          for="inlineFormInputGroup">Username</label>
-        <div class="input-group mb-2 mt-3 w-100">
-          <input type="text" class="form-control" name="location"  ngModel
-            id="inlineFormInputGroup" placeholder="address, neighborhood, city, state or zip">
-          <div class="input-group-addon" (click)="search(form.value)">Search</div>
-        </div>
-      </form>
-    </div>
-  </div>
-  
+  <router-outlet></router-outlet>
+
 </div>
-
-<router-outlet></router-outlet>
-
   <!--Debugging 
 <div class="container-fluid">
   <div class="row">
@@ -50,18 +50,10 @@
   </div>
 </div>-->
 
-<footer>
-  <div class="row">
-    <div class="col-sm text-center">
-      <!-- https://www.flickr.com/photos/lennykphotography/17390996656/ -->
-      <p class="credit">Photo:
-        <a class="credit" href="http://www.lennykphotography.com/">Lenny K.</a>
-      </p>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm text-center">
-      <p>FreeCodeCamp &nbsp; | &nbsp; <i class="zmdi zmdi-github-alt"></i> &nbsp; <a href="https://github.com/cjsheets">Chad Sheets</a></p>
-    </div>
-  </div>
+<footer class="text-center">
+  <!-- https://www.flickr.com/photos/lennykphotography/17390996656/ -->
+  <p class="credit">Photo:
+    <a class="credit" href="http://www.lennykphotography.com/">Lenny K.</a>
+  </p>
+  <p>FreeCodeCamp &nbsp; | &nbsp; <i class="zmdi zmdi-github-alt"></i> &nbsp; <a href="https://github.com/cjsheets">Chad Sheets</a></p>
 </footer>
