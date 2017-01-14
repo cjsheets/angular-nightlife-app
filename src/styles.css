@@ -7,6 +7,10 @@
   font-weight: 300;
   color: #EFEFEF;
   padding: 20px 10px;
+  text-decoration: none;
+}
+.title-link:hover, .title-link  {
+  text-decoration: none;
 }
 .btn-about {
   font-family: 'Roboto', sans-serif;

@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription }   from 'rxjs/Subscription';
+import { YelpService } from "./shared/yelp.service";
 
 @Component({
   selector: 'app-root',
@@ -11,6 +12,7 @@ export class AppComponent implements OnInit, OnDestroy {
   private activeRoute: string = '';
 
   constructor(
+    private _yelp: YelpService,
     private _router: Router
   ){}
 
@@ -19,7 +21,6 @@ export class AppComponent implements OnInit, OnDestroy {
       this.activeRoute = event.url;
     });
   }
-
   ngOnDestroy() {
           console.log('unsub')
     for(let sub of this.subs) sub.unsubscribe();

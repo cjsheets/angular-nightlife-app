@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-sm">
-        <a [routerLink]="['/nl']">
+        <a class="title-link" [routerLink]="['/nl']">
           <h3 class="page-title"><i class="zmdi zmdi-cocktail"></i> &nbsp; Angular Nightlife</h3>
         </a>
       </div>
@@ -17,7 +17,7 @@
             for="inlineFormInputGroup">Username</label>
           <div class="input-group mb-2 mt-3 w-100">
             <input type="text" class="form-control" name="location"  ngModel
-              id="inlineFormInputGroup" placeholder="address, neighborhood, city, state or zip">
+              id="inlineFormInputGroup" [placeholder]="_yelp.searchTerm">
             <div class="input-group-addon" (click)="search(form.value)">Search</div>
           </div>
         </form>
@@ -28,16 +28,16 @@
   <router-outlet></router-outlet>
 
 </div>
-  <!--Debugging 
-<div class="container-fluid">
+  <!--Debugging
+<div class="container-fluid white">
   <div class="row">
     <div class="col-sm">
       <hr>
       <b style="color: darkgreen">Debugging: </b>
       &nbsp; &nbsp; - &nbsp; &nbsp;
-      <b>Login: </b>
+      <b>route: </b> {{activeRoute}}
 
-      <b>Anon: </b>
+      <b>searchTerm: </b> {{_yelp.searchTerm}}
 
       &nbsp; &nbsp; - &nbsp; &nbsp;
 
@@ -48,7 +48,7 @@
       &nbsp; &nbsp; - &nbsp; &nbsp;
     </div>
   </div>
-</div>-->
+</div> -->
 
 <footer class="text-center">
   <!-- https://www.flickr.com/photos/lennykphotography/17390996656/ -->

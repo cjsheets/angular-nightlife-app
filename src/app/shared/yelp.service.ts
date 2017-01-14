@@ -16,6 +16,7 @@ var env = require('../../environments/local.env.js');
 export class YelpService {
 //    private apiEndpoint = 'https://api.yelp.com/v3/businesses/search?limit=10&category_filter=bars&location=';
     private apiEndpoint = '/assets/api/query.json';
+    public searchTerm: string = '';
     public searchResult$: ReplaySubject<{}> = new ReplaySubject(1);
 
     constructor(
@@ -29,6 +30,7 @@ export class YelpService {
         //this._log['log']('getBusinesses() - response: ', JSON.stringify(res));
         this.searchResult$.next(res);
       }, err => this.handleError(err));
+      this.searchTerm = location;
     }
 
   createAuthHeader(headers: Headers) : void {
