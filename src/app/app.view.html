@@ -2,12 +2,17 @@
 
   <div class="row">
     <div class="col-sm">
-      <h3 class="page-title"><i class="zmdi zmdi-cocktail"></i> &nbsp; Angular Nightlife</h3>
+      <a [routerLink]="['/nl']">
+        <h3 class="page-title"><i class="zmdi zmdi-cocktail"></i> &nbsp; Angular Nightlife</h3>
+      </a>
     </div>
-    <div class="col-sm text-right">
+    <div class="col-sm text-right" *ngIf="activeRoute == '/nl'">
       <button class="btn btn-secondary btn-about">
         &nbsp; About &nbsp;
       </button>
+    </div>
+    <div class="col-sm text-right" *ngIf="activeRoute == '/nl/search'">
+      {{activeRoute}}
     </div>
   </div>
   

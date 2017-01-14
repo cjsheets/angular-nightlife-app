@@ -1,0 +1,11 @@
+<div class="container-fluid">
+  <form class="form-inline searchbox" #form="ngForm" (submit)="search(form.value)">
+    <label class="sr-only col-form-label col-form-label-lg" 
+      for="inlineFormInputGroup">Username</label>
+    <div class="input-group mb-2 mt-5 mb-sm-0 mx-auto w-75">
+      <input type="text" class="form-control form-control-lg" name="location"  ngModel
+        id="inlineFormInputGroup" placeholder="address, neighborhood, city, state or zip">
+      <div class="input-group-addon" (click)="search(form.value)">Search</div>
+    </div>
+  </form>
+</div>

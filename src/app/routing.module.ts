@@ -3,18 +3,18 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { SearchComponent } from './search/search.component';
-import { BarsComponent } from './bars/bars.component';
+import { WelcomeComponent } from './welcome/welcome.component';
 
 // Save space in the root module, export components here
 export const routedComponents = [
   AppComponent,
   SearchComponent,
-  BarsComponent
+  WelcomeComponent
 ];
 
 const routes: Routes = [
-  { path: 'nl', component: SearchComponent },
-  { path: 'nl/search', component: BarsComponent },
+  { path: 'nl', component: WelcomeComponent },
+  { path: 'nl/search', component: SearchComponent },
   { path: '**', redirectTo: 'nl', pathMatch: 'full' }
 ];
 

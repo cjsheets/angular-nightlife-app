@@ -13,7 +13,8 @@ var env = require('../../environments/local.env.js');
 
 @Injectable()
 export class YelpService {
-    private apiEndpoint = 'https://api.yelp.com/v3/businesses/search?limit=10&category_filter=bars&location=';
+//    private apiEndpoint = 'https://api.yelp.com/v3/businesses/search?limit=10&category_filter=bars&location=';
+    private apiEndpoint = '/assets/api/query.json';
     public searchResults: Object = {total: 0};
 
     constructor(
@@ -24,6 +25,7 @@ export class YelpService {
     getBusinesses(location: string) {
       this.get(this.apiEndpoint + location).subscribe(res => {
         this._log['log']('getBusinesses(): ', res);
+        //this._log['log']('getBusinesses() - response: ', JSON.stringify(res));
         this.searchResults = res;
       });
     }
