@@ -1,6 +1,6 @@
 import { NgModule, ErrorHandler }  from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Http } from '@angular/http';
+import { HttpModule } from '@angular/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MasonryModule } from 'angular2-masonry';
 
@@ -13,7 +13,8 @@ import { RavenErrorHandler } from './sentry-io.service';
 
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule,
+    HttpModule
   ],
   exports : [
     CommonModule,

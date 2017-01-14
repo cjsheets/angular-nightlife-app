@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { Observable } from "rxjs";
 import { Attendance } from "../../../model/attendance.model";
 
+import { YelpService } from "../shared/yelp.service";
 import { Logger } from "../shared/logger.service";
 
 @Component({
@@ -11,6 +12,7 @@ import { Logger } from "../shared/logger.service";
 export class SearchComponent implements OnInit {
 
   constructor(
+    private _yelp: YelpService,
     private _log: Logger
   ){}
 
@@ -20,5 +22,6 @@ export class SearchComponent implements OnInit {
 
   search(f){
     this._log['log']('Form Submitted', f);
+    this._yelp.getBusinesses();
   }
 }
