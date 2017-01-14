@@ -22,6 +22,6 @@ export class SearchComponent implements OnInit {
 
   search(f){
     this._log['log']('Form Submitted', f);
-    this._yelp.getBusinesses();
+    this._yelp.getBusinesses(f.location);
   }
 }

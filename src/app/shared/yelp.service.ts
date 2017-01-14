@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Http, Headers, Response } from '@angular/http';
 
 import { Logger } from "../shared/logger.service";
+import * as Raven from 'raven-js';
+
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
@@ -11,49 +13,45 @@ var env = require('../../environments/local.env.js');
 
 @Injectable()
 export class YelpService {
-//    private apiEndpoint = 'https://api.yelp.com/v3/businesses/search?location=Tacoma&limit=10&category_filter=bars';
-
-
-private apiEndpoint = 'https://api.yelp.com/v3/businesses/search?term=delis&latitude=37.786882&longitude=-122.399972'
-
+    private apiEndpoint = 'https://api.yelp.com/v3/businesses/search?limit=10&category_filter=bars&location=';
+    public searchResults: Object = {total: 0};
 
     constructor(
       private _http: Http,
       private _log: Logger
     ){}
 
-    getBusinesses() {
-      this.get(this.apiEndpoint).subscribe(result => {
-          console.log( result );
+    getBusinesses(location: string) {
+      this.get(this.apiEndpoint + location).subscribe(res => {
+        this._log['log']('getBusinesses(): ', res);
+        this.searchResults = res;
       });
     }
 
-
-    private handleError(error: Response) {
-        // in a real world app, we may send the server to some remote logging infrastructure
-        // instead of just logging it to the console
-        console.error(error);
-        return Observable.throw(error.json().error || 'Server error');
-    }
-
-
-  createAuthorizationHeader(headers: Headers) {
-    headers.append('Authorization','Bearer ' + env.yelp.key); 
+  createAuthHeader(headers: Headers) : void {
+    headers.append('Authorization','Bearer ' + env.yelp.access_token); 
   }
 
-  get(url) {
+  get(url) : Observable<Response> {
     let headers = new Headers({'Content-Type': 'application/x-www-form-urlencoded'});
-    this.createAuthorizationHeader(headers);
-    return this._http.get(url, {
-      headers: headers
-    });
+    this.createAuthHeader(headers);
+    return this._http.get(url, {headers: headers})
+      .map(res => res.json())
+      .catch(this.handleError);
   }
 
-  post(url, data) {
+  post(url, data) : Observable<Response> {
     let headers = new Headers({'Content-Type': 'application/x-www-form-urlencoded'});
-    this.createAuthorizationHeader(headers);
-    return this._http.post(url, data, {
-      headers: headers
-    });
+    this.createAuthHeader(headers);
+    return this._http.post(url, data, {headers: headers})
+      .map(res => res.json())
+      .catch(this.handleError);
+  }
+
+  private handleError(err: Response) : Observable<Response> {
+    let errorMessage = 'Http Response Error :: yelp.service';
+    this._log['error']('Http Response Error: ',err);
+    Raven.captureException(err.json().err || errorMessage);
+    return Observable.throw(err.json().err || errorMessage);
   }
 }
