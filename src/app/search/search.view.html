@@ -1,16 +1,36 @@
 <div class="container">
 
-  <div class="row">
-    <div class="col-sm-12">
-      <h3 class="white">Results</h3>
-    </div>
-  </div>
-
-  <div class="row">
+  <div class="row row-results">
     <div class="col-sm" *ngIf="bricks.length > 0">
-      <masonry [options]="{transitionDuration: '0.0000001s'}">
-        <masonry-brick class="brick" *ngFor="let brick of bricks; let i = index">
-            {{brick.name}}
+      <masonry [options]="{ transitionDuration: '0.0000001s' }">
+        <masonry-brick *ngFor="let brick of bricks">
+          <div class="brick" [style.background-image]="'url(' + brick.image_url + ')'">
+            <div class="brick-header">
+                {{brick.name}}
+            </div>
+            <div class="brick-content">
+              <div class="container">
+                <div class="row">
+                  <div class="col-4 brick-text brick-info">Currently:</div>
+                  <div class="col-8 brick-text">
+                    <span class="badge badge-success" *ngIf="!brick.is_closed">Open</span>
+                    <span class="badge badge-danger" *ngIf="brick.is_closed">Closed</span>
+                  </div>
+                    <div class="col-4 brick-text brick-info">Rating:</div>
+                    <div class="col-8 brick-text"><b>{{brick.rating}}</b> starts on <a href="{{brick.url}}">Yelp</a>
+                    </div>
+                  <div class="col-4 brick-text brick-info">Directions:</div>
+                  <div class="col-8 brick-text"><a [href]="brick.google_url">Google Maps</a>
+                  </div>
+                </div>
+              </div>
+
+              <p>No one is currently going</p>
+              <button class="btn btn-secondary btn-going">
+                I'm Going
+              </button>
+            </div>
+          </div>
         </masonry-brick>
       </masonry>
     </div>

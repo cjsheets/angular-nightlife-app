@@ -7,6 +7,11 @@ export interface YelpResponse {
 export interface YelpBusiness {
     id: string,
     image_url: string,
-    name: string
-    url: string
+    name: string,
+    url: string,
+    google_url: string,
+    coordinates: {
+        latitude: number,
+        longitude: number
+    }
 }

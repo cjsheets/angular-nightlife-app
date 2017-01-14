@@ -8,7 +8,8 @@ import { Logger } from "../shared/logger.service";
 
 @Component({
   selector: "welcome",
-  templateUrl: './welcome.view.html'
+  templateUrl: './welcome.view.html',
+  styleUrls: ['./welcome.view.css']
 })
 export class WelcomeComponent implements OnInit {
 

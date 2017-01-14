@@ -8,7 +8,8 @@ import { Logger } from "../shared/logger.service";
 
 @Component({
   selector: "search",
-  templateUrl: './search.view.html'
+  templateUrl: './search.view.html',
+  styleUrls: ['./search.view.css']
 })
 export class SearchComponent implements OnInit {
   private bricks: Array<{}> = [];
@@ -23,9 +24,11 @@ export class SearchComponent implements OnInit {
       this.bricks = [];
       //this._log['log']('setupPolls(): ', polls)
       res.businesses.forEach((business: YelpBusiness) => {
-        this.bricks.push({name: business.name})
+        business.google_url = 'http://maps.google.com/?ll=' +
+          business.coordinates.latitude + ',' +
+          business.coordinates.longitude + ',16z&q=' + business.name;
+        this.bricks.push(business);
       });
-      
     });
   }
 

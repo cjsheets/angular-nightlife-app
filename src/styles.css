@@ -35,10 +35,6 @@ footer {
   color: rgba(150, 150, 150, 0.5);
   font-size: 0.9rem;
 }
-.searchbox {
-    position: relative;
-    top: 20vh;
-}
 
 .form-inline .form-control{
     background: rgba(255, 255, 255, 0.15);
@@ -88,38 +84,6 @@ html {
   background-size: cover;
 }
 
-.app {
-  background: lightgrey;
-  padding: 20px;
-}
-
 .white {
   color: #FFFFFF;
 }
-
-
-
-.gridListdemoBasicUsage md-grid-list {
-  margin: 8px; }
-
-.gridListdemoBasicUsage .gray {
-  background: #f5f5f5; }
-
-.gridListdemoBasicUsage .green {
-  background: #b9f6ca; }
-
-.gridListdemoBasicUsage .yellow {
-  background: #ffff8d; }
-
-.gridListdemoBasicUsage .blue {
-  background: #84ffff; }
-
-.gridListdemoBasicUsage .purple {
-  background: #b388ff; }
-
-.gridListdemoBasicUsage .red {
-  background: #ff8a80; }
-
-.gridListdemoBasicUsage md-grid-tile {
-  transition: all 400ms ease-out 50ms; }
-
