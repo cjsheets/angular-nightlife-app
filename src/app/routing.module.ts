@@ -14,7 +14,7 @@ export const routedComponents = [
 
 const routes: Routes = [
   { path: 'nl', component: SearchComponent },
-  { path: 'nl/search', component: BarsComponent }
+  { path: 'nl/search', component: BarsComponent },
   { path: '**', redirectTo: 'nl', pathMatch: 'full' }
 ];
 

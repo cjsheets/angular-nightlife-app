@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
 import { Logger } from '../shared/logger.service';
-import template from "./bars.view.html";
 
 @Component({
   selector: 'bars',
-  template
+  templateUrl: './bars.view.html'
 })
 export class BarsComponent implements OnInit {
 
