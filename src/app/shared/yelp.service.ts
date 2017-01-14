@@ -5,6 +5,7 @@ import { Logger } from "../shared/logger.service";
 import * as Raven from 'raven-js';
 
 import { Observable } from 'rxjs/Observable';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
@@ -15,7 +16,7 @@ var env = require('../../environments/local.env.js');
 export class YelpService {
 //    private apiEndpoint = 'https://api.yelp.com/v3/businesses/search?limit=10&category_filter=bars&location=';
     private apiEndpoint = '/assets/api/query.json';
-    public searchResults: Object = {total: 0};
+    public searchResult$: ReplaySubject<{}> = new ReplaySubject(1);
 
     constructor(
       private _http: Http,
@@ -26,8 +27,8 @@ export class YelpService {
       this.get(this.apiEndpoint + location).subscribe(res => {
         this._log['log']('getBusinesses(): ', res);
         //this._log['log']('getBusinesses() - response: ', JSON.stringify(res));
-        this.searchResults = res;
-      });
+        this.searchResult$.next(res);
+      }, err => this.handleError(err));
     }
 
   createAuthHeader(headers: Headers) : void {

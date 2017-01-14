@@ -1,3 +1,23 @@
+<div class="container">
 
+  <div class="row">
+    <div class="col-sm-12">
+      <h3 class="white">Results</h3>
+    </div>
+  </div>
 
-This be where the results go
+  <div class="row">
+    <div class="col-sm" *ngIf="bricks.length > 0">
+      <masonry [options]="{transitionDuration: '0.0000001s'}">
+        <masonry-brick class="brick" *ngFor="let brick of bricks; let i = index">
+            {{brick.name}}
+        </masonry-brick>
+      </masonry>
+    </div>
+    <div class="col-sm text-center" *ngIf="bricks.length === 0">
+      <br><br>
+      <p>No results found. Try searching again</p>
+      <br><br>
+    </div>
+  </div>
+</div>
