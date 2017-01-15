@@ -2,12 +2,13 @@
  *|  Passport login configuration
  */
 
-var passport        = require('passport');
-var LocalStrategy   = require('passport-local').Strategy;
-var FbStrategy      = require('passport-facebook').Strategy;
-var TwtStrategy     = require('passport-twitter').Strategy;
-var User            = require('../models').User;
-var env             = require('./environment');
+var passport          = require('passport');
+var LocalStrategy     = require('passport-local').Strategy;
+var FacebookStrategy  = require('passport-facebook').Strategy;
+var TwitterStrategy   = require('passport-twitter').Strategy;
+var GoogleStrategy    = require('passport-google-oauth').OAuth2Strategy;
+var User              = require('../models').User;
+var env               = require('./environment');
 
 
 /**
@@ -58,7 +59,7 @@ function facebookLogin(token, refreshToken, profile, done) { // async callback
 };
 
 function newFacebookStrategy(callback){
-  return new FbStrategy({
+  return new FacebookStrategy({
     clientID      : env.facebook.client_id,
     clientSecret  : env.facebook.client_secret,
     callbackURL   : env.facebook.callback,
@@ -75,7 +76,7 @@ passport.use(newFacebookStrategy(facebookLogin));
 function twitterLogin(token, tokenSecret, profile, done) { // async callback
   // User.findOne wont fire unless data is sent back
   process.nextTick(function() {
-    // Find user in database using Facebook ID
+    // Find user in database using Twitter ID
     User.findOne({ 'twitter.id' : profile.id }, function(err, user) {
       if (err) return done(err); // ie. error connecting to the database
       if (user) { 
@@ -83,8 +84,8 @@ function twitterLogin(token, tokenSecret, profile, done) { // async callback
 
       } else {
         var newUser                   = new User();
-        newUser.twitter.id            = profile.id; // Facebook ID                   
-        newUser.twitter.token         = token; // Facebook provided user token
+        newUser.twitter.id            = profile.id; // Twitter ID                   
+        newUser.twitter.token         = token; // Twitter provided user token
         newUser.twitter.username      = profile.username;
         newUser.twitter.displayName   = profile.displayName;
         newUser.twitter.photo         = profile.photos[0].value; // Array of photos returned
@@ -99,13 +100,52 @@ function twitterLogin(token, tokenSecret, profile, done) { // async callback
 };
 
 function newTwitterStrategy(callback){
-  return new TwtStrategy({
+  return new TwitterStrategy({
     consumerKey     : env.twitter.consumer_key,
     consumerSecret  : env.twitter.consumer_secret,
     callbackURL     : env.twitter.callback
   }, callback);
 }
 passport.use(newTwitterStrategy(twitterLogin));
+
+/**
+ * Strategy - Google
+ *   Google provides the token and profile info
+ *   which we'll store in our database
+ */
+function googleLogin(token, refreshToken, profile, done) { // async callback
+  // User.findOne wont fire unless data is sent back
+  process.nextTick(function() {
+    // Find user in database using Google ID
+    User.findOne({ 'google.id' : profile.id }, function(err, user) {
+      if (err) return done(err); // ie. error connecting to the database
+      if (user) { 
+        return done(null, user); // user found, return that user
+
+      } else {
+        var newUser           = new User();
+        newUser.google.id     = profile.id; // Google ID                   
+        newUser.google.token  = token; // Google provided user token
+        newUser.google.name   = profile.displayName;
+        newUser.google.email  = profile.emails[0].value; // Array of photos returned
+
+        newUser.save(function(err) { // Commit to database
+          if (err) throw err;
+          return done(null, newUser); // User added, return the new user
+        });
+      }
+    }); // / User.findOne({..
+  });
+};
+
+function newGoogleStrategy(callback){
+  return new GoogleStrategy({
+    clientID      : env.google.client_id,
+    clientSecret  : env.google.client_secret,
+    callbackURL   : env.google.callback
+  }, callback);
+}
+passport.use(newGoogleStrategy(googleLogin));
 
 /**
  * Strategy - Local Signup

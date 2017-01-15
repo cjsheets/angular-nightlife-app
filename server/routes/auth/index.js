@@ -36,4 +36,18 @@ router.get('/twitter/callback',
   })
 );
 
+/**
+ * Authorization route for Google provider
+ */
+router.get('/google',
+  passport.authenticate('google', { scope : ['profile', 'email'] }));
+
+// Handle callback after Google authentication
+router.get('/google/callback',
+  passport.authenticate('google', {
+    successRedirect : '/profile',
+    failureRedirect : '/'
+  })
+);
+
 module.exports = router;
