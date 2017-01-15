@@ -35,4 +35,4 @@ testem.log
 Thumbs.db
 
 yelp.api
-*local.env.js
+*.env.js
