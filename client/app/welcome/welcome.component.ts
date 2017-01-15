@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { Observable } from "rxjs";
-import { Attendance } from "../../../model/attendance.model";
+import { Attendance } from "../shared/model/attendance.model";
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { YelpService } from "../shared/yelp.service";
