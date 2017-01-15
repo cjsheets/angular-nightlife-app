@@ -9,8 +9,8 @@ var bcrypt      = require('bcrypt-nodejs');
 var db          = {};
 
 
-/* -----------------------------------|
- *|  Helper Methods
+/**
+ * Helper Methods
  */
 
 // Generate a hash

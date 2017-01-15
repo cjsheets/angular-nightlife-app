@@ -14,7 +14,7 @@ const allowedOrigins = ['http://localhost:4200', 'https://angular-nightlife.hero
 router.use(function(request, response, next) {
   var origin = request.headers.origin;
   if (allowedOrigins.indexOf(origin) > -1) {
-       response.setHeader('Access-Control-Allow-Origin', origin);
+    response.setHeader('Access-Control-Allow-Origin', origin);
   }
   response.setHeader('Access-Control-Allow-Headers', 'Content-Type,X-Requested-With');
   response.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,HEAD,DELETE,OPTIONS');
@@ -33,34 +33,38 @@ router.get('/', function(req, res, next) {
   res.render('index.ejs'); // load the index.ejs file
 });
 
-// Login using any credential
+// Login Form
 router.get('/login', function(req, res, next) {
   // render the page and pass in any flash data if it exists
   res.render('login.ejs', { message: req.flash('loginMessage') }); 
 });
 
-    // process the login form
-    // app.post('/login', do all our passport stuff here);
+// Login Form - Process submission
+router.post('/login', passport.authenticate('local-login', {
+  successRedirect : '/profile',
+  failureRedirect : '/login',
+  failureFlash : true // allow flash messages
+}));
 
-// Signup for login page
+// Signup Form
 router.get('/signup', function(req, res, next) {
   // render the page and pass in any flash data if it exists
   res.render('signup.ejs', { message: req.flash('signupMessage') });
 });
 
-   // process the signup form
+// Signup Form - Process submission
 router.post('/signup', passport.authenticate('local-signup', {
-    successRedirect : '/profile', // redirect to the secure profile section
-    failureRedirect : '/signup', // redirect back to the signup page if there is an error
-    failureFlash : true // allow flash messages
+  successRedirect : '/profile',
+  failureRedirect : '/signup',
+  failureFlash : true // allow flash messages
 }));
 
 // Protected profile page
 router.get('/profile', function(req, res, next) {
   res.render('profile.ejs', {
-    // we will want this protected so you have to be logged in to visit
-    // we will use route middleware to verify this (the isLoggedIn function)
-    user : req.user // get the user out of session and pass to template
+  // we will want this protected so you have to be logged in to visit
+  // we will use route middleware to verify this (the isLoggedIn function)
+  user : req.user // get the user out of session and pass to template
   });
 });
 
@@ -72,7 +76,7 @@ router.get('/logout', function(req, res, next) {
 
 function isLoggedIn(req, res, next) {
   if (req.isAuthenticated())
-    return next();
+  return next();
   res.redirect('/'); // If unauthenticated, redir to landing page
 }
 
