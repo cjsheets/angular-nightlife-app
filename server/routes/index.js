@@ -1,10 +1,13 @@
 /* -----------------------------------|
- *|  Router :: Root
+ *|  Router  ::  Root
  */
 var express     = require('express')
 var passport    = require('passport');
 var authHelper  = require('./authHelper')
 var router      = express.Router()
+
+// Import all other route modules
+var auth        = require('./auth');
 
 const allowedOrigins = ['http://localhost:4200', 'https://angular-nightlife.herokuapp.com'];
 
@@ -25,8 +28,7 @@ router.use(function(request, response, next) {
 /**
  * "use" should be before any other route definitions
  */
-// router.use('/api', api);
-// router.use('/authorize', authorize);
+router.use('/auth', auth);
 
 // Landing page
 router.get('/', function(req, res, next) {
@@ -63,7 +65,7 @@ router.post('/signup', passport.authenticate('local-signup', {
 router.get('/profile', function(req, res, next) {
   res.render('profile.ejs', {
   // we will want this protected so you have to be logged in to visit
-  // we will use route middleware to verify this (the isLoggedIn function)
+  // we will use route middleware to verify this (the isNotAuthOrRedirect function)
   user : req.user // get the user out of session and pass to template
   });
 });
@@ -73,12 +75,6 @@ router.get('/logout', function(req, res, next) {
   req.logout();
   res.redirect('/');
 });
-
-function isLoggedIn(req, res, next) {
-  if (req.isAuthenticated())
-  return next();
-  res.redirect('/'); // If unauthenticated, redir to landing page
-}
 
 /**
  * Anything else under '/', facilitates Angular HTML 5 routing. Must

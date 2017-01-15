@@ -4,7 +4,6 @@
 var express         = require('express');
 var session         = require('express-session');
 var path            = require('path');
-var env             = require('./environment');
 var logger          = require('morgan');
 var cookieParser    = require('cookie-parser');
 var bodyParser      = require('body-parser');
@@ -14,6 +13,7 @@ var mongoose        = require('mongoose');
 var morgan          = require('morgan');
 var flash           = require('connect-flash');
 var Raven           = require('raven');
+var env             = require('./environment');
 
 /* -----------------------------------|
  *|  Configuration

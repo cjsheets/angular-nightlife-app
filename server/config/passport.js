@@ -4,7 +4,9 @@
 
 var passport        = require('passport');
 var LocalStrategy   = require('passport-local').Strategy;
+var FbStrategy      = require('passport-facebook').Strategy;
 var User            = require('../models').User;
+var env             = require('./environment');
 
 
 /**
@@ -20,6 +22,50 @@ passport.deserializeUser(function(id, done) {
     done(err, user);
   });
 });
+
+/**
+ * Strategy - Facebook
+ *   Facebook provides the token and profile info
+ *   which we'll store in our database
+ */
+function facebookLogin(token, refreshToken, profile, done) { // async callback
+  // Passport standardizes callbacks with profile object
+  //  - http://passportjs.org/guide/profile/
+  // User.findOne wont fire unless data is sent back
+  process.nextTick(function() {
+    // Find user in database using Facebook ID
+    User.findOne({ 'facebook.id' : profile.id }, function(err, user) {
+      if (err) return done(err);
+      if (user) { 
+        return done(null, user); // user found, return that user
+
+      } else {
+        var newUser             = new User();
+        newUser.facebook.id     = profile.id; // Facebook ID                   
+        newUser.facebook.token  = token; // Facebook provided user token
+        // See: passport user profile for how names are returned              
+        newUser.facebook.name   = profile.name.givenName + ' ' + profile.name.familyName;
+        // Facebook can return multiple emails, we take the first
+        newUser.facebook.email  = profile.emails[0].value;
+
+        newUser.save(function(err) { // Commit to database
+          if (err) throw err;
+          return done(null, newUser); // User added, return the new user
+        });
+      }
+    }); // / User.findOne({..
+  });
+};
+
+function newFacebookStrategy(callback){
+  return new FbStrategy({
+    clientID      : env.facebook.client_id,
+    clientSecret  : env.facebook.client_secret,
+    callbackURL   : env.facebook.callback,
+    profileFields : ['name', 'displayName', 'emails']
+  }, callback);
+}
+passport.use(newFacebookStrategy(facebookLogin));
 
 /**
  * Strategy - Local Signup
