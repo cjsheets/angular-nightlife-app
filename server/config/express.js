@@ -9,7 +9,7 @@ var logger          = require('morgan');
 var cookieParser    = require('cookie-parser');
 var bodyParser      = require('body-parser');
 var passport        = require('passport');
-var passportConfig  = require('./passport'); // passport configuration and provider logic
+var passportConfig  = require('./passport');
 var mongoose        = require('mongoose');
 var morgan          = require('morgan');
 var flash           = require('connect-flash');
@@ -21,7 +21,7 @@ var Raven           = require('raven');
 var app             = express();
 var port            = process.env.PORT || 5000;
 
-
+// Setup logging and database middlewares
 let em = env.mongo, er = env.raven;
 mongoose.connect('mongodb://' + em.user + ':' + em.pass + '@' + 
   em.host + ':' + em.port + '/' + em.db); // connect to database
@@ -30,7 +30,7 @@ Raven.config('https://' + er.key + ':' + er.secret + '@' +
 
 // require('./config/passport')(passport); // pass passport for configuration
 
-// set up our express application
+// Setup express
 app.use(morgan('dev')); // log every request to the console
 app.use(cookieParser()); // read cookies (needed for auth)
 app.use(bodyParser()); // get information from html forms
@@ -38,8 +38,8 @@ app.use(bodyParser()); // get information from html forms
 app.set('views', path.join(__dirname, '../views'));
 app.set('view engine', 'ejs'); // set up ejs for templating
 
-// required for passport
-app.use(session({ secret: 'ilovescotchscotchyscotchscotch' })); // session secret
+// Initialize passport
+app.use(session({ secret: env.node.session_secret }));
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session

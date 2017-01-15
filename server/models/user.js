@@ -4,7 +4,7 @@
 
 var mongoose = require('mongoose');
 
-module.export = mongoose.Schema({
+module.exports = mongoose.Schema({
 
   local           : {
     email         : String,
