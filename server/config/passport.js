@@ -5,6 +5,7 @@
 var passport        = require('passport');
 var LocalStrategy   = require('passport-local').Strategy;
 var FbStrategy      = require('passport-facebook').Strategy;
+var TwtStrategy     = require('passport-twitter').Strategy;
 var User            = require('../models').User;
 var env             = require('./environment');
 
@@ -35,18 +36,17 @@ function facebookLogin(token, refreshToken, profile, done) { // async callback
   process.nextTick(function() {
     // Find user in database using Facebook ID
     User.findOne({ 'facebook.id' : profile.id }, function(err, user) {
-      if (err) return done(err);
+      if (err) return done(err); // ie. error connecting to the database
       if (user) { 
         return done(null, user); // user found, return that user
 
       } else {
+        // See: passport user profile for how names are returned       
         var newUser             = new User();
         newUser.facebook.id     = profile.id; // Facebook ID                   
-        newUser.facebook.token  = token; // Facebook provided user token
-        // See: passport user profile for how names are returned              
+        newUser.facebook.token  = token; // Facebook provided user token       
         newUser.facebook.name   = profile.name.givenName + ' ' + profile.name.familyName;
-        // Facebook can return multiple emails, we take the first
-        newUser.facebook.email  = profile.emails[0].value;
+        newUser.facebook.email  = profile.emails[0].value; // Array of emails returned
 
         newUser.save(function(err) { // Commit to database
           if (err) throw err;
@@ -66,6 +66,46 @@ function newFacebookStrategy(callback){
   }, callback);
 }
 passport.use(newFacebookStrategy(facebookLogin));
+
+/**
+ * Strategy - Twitter
+ *   Twitter provides the token and profile info
+ *   which we'll store in our database
+ */
+function twitterLogin(token, tokenSecret, profile, done) { // async callback
+  // User.findOne wont fire unless data is sent back
+  process.nextTick(function() {
+    // Find user in database using Facebook ID
+    User.findOne({ 'twitter.id' : profile.id }, function(err, user) {
+      if (err) return done(err); // ie. error connecting to the database
+      if (user) { 
+        return done(null, user); // user found, return that user
+
+      } else {
+        var newUser                   = new User();
+        newUser.twitter.id            = profile.id; // Facebook ID                   
+        newUser.twitter.token         = token; // Facebook provided user token
+        newUser.twitter.username      = profile.username;
+        newUser.twitter.displayName   = profile.displayName;
+        newUser.twitter.photo         = profile.photos[0].value; // Array of photos returned
+
+        newUser.save(function(err) { // Commit to database
+          if (err) throw err;
+          return done(null, newUser); // User added, return the new user
+        });
+      }
+    }); // / User.findOne({..
+  });
+};
+
+function newTwitterStrategy(callback){
+  return new TwtStrategy({
+    consumerKey     : env.twitter.consumer_key,
+    consumerSecret  : env.twitter.consumer_secret,
+    callbackURL     : env.twitter.callback
+  }, callback);
+}
+passport.use(newTwitterStrategy(twitterLogin));
 
 /**
  * Strategy - Local Signup

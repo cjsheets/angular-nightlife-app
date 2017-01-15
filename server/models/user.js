@@ -20,7 +20,8 @@ module.exports = mongoose.Schema({
     id            : String,
     token         : String,
     displayName   : String,
-    username      : String
+    username      : String,
+    photo         : String
   },
   google          : {
     id            : String,

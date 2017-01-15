@@ -22,4 +22,18 @@ router.get('/facebook/callback',
   })
 );
 
+/**
+ * Authorization route for Twitter provider
+ */
+router.get('/twitter',
+  passport.authenticate('twitter'));
+
+// Handle callback after Twitter authentication
+router.get('/twitter/callback',
+  passport.authenticate('twitter', {
+    successRedirect : '/profile',
+    failureRedirect : '/'
+  })
+);
+
 module.exports = router;
