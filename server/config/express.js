@@ -8,7 +8,7 @@ var logger         = require('morgan');
 var cookieParser   = require('cookie-parser');
 var bodyParser     = require('body-parser');
 var passport       = require('passport');
-var passportConfig = require('./config/passport'); // all passport configuration and provider logic
+var passportConfig = require('./passport'); // all passport configuration and provider logic
 
 /**
  * Import main route module

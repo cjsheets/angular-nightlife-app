@@ -6,7 +6,7 @@
  * Import modules
  */
 var config          = require('config');
-var User            = require('../models').User;
+var User            = require('../model').User;
 var passport        = require('passport');
 var GoogleStrategy  = require('passport-google-oauth2').Strategy;
 var TwitterStrategy = require('passport-twitter').Strategy;
