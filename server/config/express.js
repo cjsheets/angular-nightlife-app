@@ -44,12 +44,19 @@ app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 
+
+/* -----------------------------------|
+ *|  Routes
+ */
+var routes          = require('../routes');
+app.use('/', routes);
+
 // routes ======================================================================
-require('./routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
+//require('./routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
 
 // launch ======================================================================
 app.listen(port);
-console.log('The magic happens on port ' + port);
+console.log(' 🌎  Express server listening on %d, in %s mode  🌎', port, process.env.NODE_ENV);
 
 
 

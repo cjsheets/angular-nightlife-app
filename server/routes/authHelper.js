@@ -1,6 +1,6 @@
-/**
- * Authentication helpers to determine if a user is logged in or not
- * before a route returns information to the response
+/* -----------------------------------|
+ *|  Determine if a user is authenticated
+ *|  prior to route responding
  */
 
 function isAuthOrRedirect(req, res, next) {

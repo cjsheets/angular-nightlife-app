@@ -1,31 +1,26 @@
-// "use strict";
+/* -----------------------------------|
+ *|  MongoDB schema and helper
+ *|  functions
+ */
 
-// var fs        = require("fs");
-// var path      = require("path");
-// var Sequelize = require("sequelize");
-// var env       = process.env.NODE_ENV || "development";
-// var config    = require('config');
-// var dbconfig  = config.get('database-configuration');
-// var sequelize = new Sequelize("mysql://" + dbconfig.user + ":" + dbconfig.pass + "@" + dbconfig.host + "/" + dbconfig.name);
-// var db        = {};
+var mongoose    = require('mongoose');
+var userSchema  = require('./user');
+var bcrypt      = require('bcrypt-nodejs');
 
-// fs
-//   .readdirSync(__dirname)
-//   .filter(function(file) {
-//     return (file.indexOf(".") !== 0) && (file !== "index.js");
-//   })
-//   .forEach(function(file) {
-//     var model = sequelize.import(path.join(__dirname, file));
-//     db[model.name] = model;
-//   });
 
-// Object.keys(db).forEach(function(modelName) {
-//   if ("associate" in db[modelName]) {
-//     db[modelName].associate(db);
-//   }
-// });
+/* -----------------------------------|
+ *|  Helper Methods
+ */
 
-// db.sequelize = sequelize;
-// db.Sequelize = Sequelize;
+// Generate a hash
+userSchema.methods.generateHash = function(password) {
+  return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+};
 
-// module.exports = db;
+// Is password valid
+userSchema.methods.validPassword = function(password) {
+  return bcrypt.compareSync(password, this.local.password);
+};
+
+// Expose the user model
+module.exports = mongoose.model('User', userSchema);
