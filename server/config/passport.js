@@ -8,6 +8,7 @@ var FacebookStrategy  = require('passport-facebook').Strategy;
 var TwitterStrategy   = require('passport-twitter').Strategy;
 var GoogleStrategy    = require('passport-google-oauth').OAuth2Strategy;
 var User              = require('../models').User;
+var debug             = require('debug')('pass:main');
 var env               = require('./environment');
 
 

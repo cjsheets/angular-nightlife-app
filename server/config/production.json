@@ -1,7 +1,0 @@
-{  
-  "oauthCallbacks": {
-    "googleCallbackUrl"  : "https://cjs-angular-nightlife.herokuapp.com/callback/google",
-    "twitterCallbackUrl": "https://cjs-angular-nightlife.herokuapp.com/callback/twitter",
-    "facebookCallbackUrl": "https://cjs-angular-nightlife.herokuapp.com/callback/facebook"
-  }
-}

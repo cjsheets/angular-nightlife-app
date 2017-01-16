@@ -13,6 +13,7 @@ var mongoose        = require('mongoose');
 var morgan          = require('morgan');
 var flash           = require('connect-flash');
 var Raven           = require('raven');
+const debug           = require('debug')('express:main');
 var env             = require('./environment');
 
 /* -----------------------------------|
@@ -30,7 +31,7 @@ Raven.config('https://' + er.key + ':' + er.secret + '@' +
 
 // require('./config/passport')(passport); // pass passport for configuration
 
-// Setup express
+debug('Setup express server, initialize middleware');
 app.use(morgan('dev')); // log every request to the console
 app.use(cookieParser()); // read cookies (needed for auth)
 app.use(bodyParser()); // get information from html forms
@@ -38,7 +39,7 @@ app.use(bodyParser()); // get information from html forms
 app.set('views', path.join(__dirname, '../views'));
 app.set('view engine', 'ejs'); // set up ejs for templating
 
-// Initialize passport
+debug('Initialie passport for authentication');
 app.use(session({ secret: env.express.session_secret }));
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
@@ -56,7 +57,7 @@ app.use('/', routes);
 
 // launch ======================================================================
 app.listen(port);
-console.log(' 🌎  Express server listening on %d, in %s mode  🌎', port, process.env.NODE_ENV);
+debug(' 🌎  Express server listening on %d, in %s mode  🌎', port, process.env.NODE_ENV);
 
 
 

@@ -1,13 +1,26 @@
 #!/usr/bin/env node
 
 /* -----------------------------------|
- *|  Module Dependencies
+ *|  Initialize Environment
  */
+var env         = require('./config/environment');
 
-var app = require('./config/express');
-var debug = require('debug')('express-app:server');
+if (env.node.env === 'development' || env.node.env === 'test') {
+  process.env.DEBUG = 'app:*,api:*,passport:*,express:main,router:*';
+}
+
+/**
+ * Load App Modules
+ */
+var app         = require('./config/express');
 // var models = require('./model');
 // var http = require('http');
+
+
+
+
+
+
 
 /**
  * Get port from environment and store in Express.

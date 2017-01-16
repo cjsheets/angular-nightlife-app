@@ -7,6 +7,7 @@ var express     = require('express')
 var passport    = require('passport');
 var authHelper  = require('../authHelper')
 var router      = express.Router()
+var debug       = require('debug')('router:auth');
 
 // User is authenticated
 router.get('/valid', authHelper.isAuth, function(req, res, next) {

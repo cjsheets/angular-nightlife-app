@@ -6,7 +6,7 @@
   "scripts": {
     "start": "ng serve",
     "express-prod": "export NODE_ENV=production; node ./server/app",
-    "express-dev": "export NODE_ENV=development; node ./server/app",
+    "express-dev": "node ./server/app",
     "lint": "tslint \"client/**/*.ts\"",
     "test": "ng test",
     "pree2e": "webdriver-manager update",
