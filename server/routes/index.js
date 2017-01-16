@@ -46,7 +46,7 @@ router.get('/', function(req, res, next) {
 });
 
 // Landing page
-router.get('/nl', function(req, res, next) {
+router.get('/nl', authHelper.returnTo, function(req, res, next) {
   debug('Route /nl accessed. Serving Angular site');
   res.sendFile(path.join(__dirname, '../../dist/index.html'));
 });
@@ -55,7 +55,7 @@ router.get('/nl', function(req, res, next) {
  * Anything else under '/', facilitates Angular HTML 5 routing. Must
  * declare below all other routes to avoid catching their requests
  */
-router.get('*', function(req, res, next) {
+router.get('*', authHelper.returnTo, function(req, res, next) {
   debug('Catch-All route accessed. Serving index');
   res.sendFile(path.join(__dirname, '../../dist/index.html'));
   //res.render('index');

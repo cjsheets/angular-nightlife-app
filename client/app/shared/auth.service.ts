@@ -30,6 +30,7 @@ export class AuthService {
 
 
   authenticated() {
+    this._log['log']('auth::authenticated(): ', this._apiRoute.authenticate);
     return this.http.get(this._apiRoute.authenticate, 
       <RequestOptionsArgs> {withCredentials: true})
       .map((res: Response) => res.json())
@@ -37,6 +38,7 @@ export class AuthService {
   }
 
   login(user) {
+    this._log['log']('auth::login(user) ', user);
     let body = JSON.stringify(user);
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
@@ -48,6 +50,7 @@ export class AuthService {
   }
 
   logout() {
+    this._log['log']('auth::logout()');
     return this.http.get(this._apiRoute.logout, 
       <RequestOptionsArgs> {withCredentials: true})
       .map((res: Response) => res.json())
@@ -55,6 +58,7 @@ export class AuthService {
   }
 
   register(user) {
+    this._log['log']('auth::register(user) ', user);
     let body = JSON.stringify(user);
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
@@ -66,6 +70,7 @@ export class AuthService {
   }
 
   getUsers(limit: number = 5) {
+    this._log['log']('auth::getUsers(limit) ', limit);
     return this.http.get(this._apiRoute.getUsers + "?limit=" + limit + 
       "&desc=true", <RequestOptionsArgs> {withCredentials: true})
       .map((res: Response) => res.json())

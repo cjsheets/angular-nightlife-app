@@ -45,8 +45,17 @@
       <a [routerLink]="['/nl/demo']">/demo</a>,
 
       &nbsp; &nbsp; - &nbsp; &nbsp;
-      <button (click)="openAuthWindow('google')" class="btn btn-secondary btn-sm">
+      <button (click)="redirectAuth('google')" class="btn btn-secondary btn-sm">
         Google
+      </button>
+      <button (click)="redirectAuth('twitter')" class="btn btn-secondary btn-sm">
+        Twitter
+      </button>
+      <button (click)="redirectAuth('facebook')" class="btn btn-secondary btn-sm">
+        Facebook
+      </button>
+      <button (click)="isAuthenticated()" class="btn btn-secondary btn-sm">
+        Test: {{isAuth}}
       </button>
     </div>
   </div>

@@ -106,7 +106,7 @@ router.get('/twitter',
 router.get('/twitter/callback', function(req, res, next) {
   // Implement custom passport callback for req. access
   passport.authenticate('twitter', function(err, user, info){
-    debug('Twitter authentication callback: /twitter/callback')
+    debug('Twitter authentication callback: /twitter/callback, from: ' + req.session.returnTo)
     if (err) return next(err)
     if (!user) return res.redirect(req.session.returnTo || '/');
     req.logIn(user, function(err) {

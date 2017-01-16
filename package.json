@@ -63,6 +63,7 @@
     "@types/node": "^6.0.42",
     "angular-cli": "1.0.0-beta.21",
     "codelyzer": "~1.0.0-beta.3",
+    "express-debug": "^1.1.1",
     "jasmine-core": "2.5.2",
     "jasmine-spec-reporter": "2.5.0",
     "karma": "1.2.0",
