@@ -11,7 +11,6 @@ import { Logger, ConsoleLogService } from './logger.service';
 
 import { RavenErrorHandler } from './sentry-io.service';
 
-
 @NgModule({
   imports: [
     CommonModule,
@@ -28,7 +27,7 @@ import { RavenErrorHandler } from './sentry-io.service';
     YelpService,
     { provide: Logger, useClass: ConsoleLogService },
     { provide: ErrorHandler, useClass: RavenErrorHandler },
-    //{ provide: 'apiBase', useValue: 'https://angular-nightlife.herokuapp.com' }
+    { provide: 'api-url', useValue: 'https://angular-nightlife.herokuapp.com' },
   ],
 })
 export class SharedModule { }

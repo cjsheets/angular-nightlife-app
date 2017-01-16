@@ -5,7 +5,7 @@
   "angular-cli": {},
   "scripts": {
     "start": "ng serve",
-    "express-prod": "npm export NODE_ENV=production; node ./server/app",
+    "express-prod": "export NODE_ENV=production; node ./server/app",
     "express-dev": "export NODE_ENV=development; node ./server/app",
     "lint": "tslint \"client/**/*.ts\"",
     "test": "ng test",

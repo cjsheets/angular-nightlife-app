@@ -12,22 +12,26 @@ import * as Raven from 'raven-js';
 
 @Injectable()
 export class AuthService {
+  private _apiRoute = {
+    login: this._api + '/auth/local',
+    logout: this._api + '/auth/logout',
+    authenticate: this._api + '/auth/valid',
+    register: this._api + '/api/users/register',
+    getUsers: this._api + '/api/users',
+    getMe: this._api + '/api/users/me',
+    userExists: this._api + '/api/users/exists',
+  };
+  
   constructor(
     private http: Http, 
     private _log: Logger,
+    @Inject('api-url') private _api: string,
   ) {}
-  // Lookup how to provide string to service
-//  private _api: string = 'https://angular-nightlife.herokuapp.com';
-  private _api: string = 'http://127.0.0.1:5000';
-  private _loginApi = this._api + '/auth/local';
-  private _logoutApi = this._api + '/logout';
-  private _authenticatedApi = this._api + '/auth/valid';
-  private _registerApi = this._api + '/api/users/register';
-  private _userExistsApi = this._api + '/api/users/exists';
 
 
   authenticated() {
-    return this.http.get(this._authenticatedApi, <RequestOptionsArgs> {withCredentials: true})
+    return this.http.get(this._apiRoute.authenticate, 
+      <RequestOptionsArgs> {withCredentials: true})
       .map((res: Response) => res.json())
       .catch(this.handleError);
   }
@@ -37,13 +41,15 @@ export class AuthService {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
 
-    return this.http.post(this._loginApi, body, <RequestOptionsArgs> {headers: headers, withCredentials: true})
+    return this.http.post(this._apiRoute.login, body, 
+      <RequestOptionsArgs> {headers: headers, withCredentials: true})
       .map((res: Response) => res)
       .catch(this.handleError);
   }
 
   logout() {
-    return this.http.get(this._logoutApi, <RequestOptionsArgs> {withCredentials: true})
+    return this.http.get(this._apiRoute.logout, 
+      <RequestOptionsArgs> {withCredentials: true})
       .map((res: Response) => res.json())
       .catch(this.handleError);
   }
@@ -53,19 +59,22 @@ export class AuthService {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
 
-    return this.http.post(this._registerApi, body, <RequestOptionsArgs> {headers: headers, withCredentials: true})
+    return this.http.post(this._apiRoute.register, body, 
+      <RequestOptionsArgs> {headers: headers, withCredentials: true})
       .map((res: Response) => res)
       .catch(this.handleError);
   }
 
-  getUsers() {
-    return this.http.get(this._api + "/api/users?limit=5&desc=true", <RequestOptionsArgs> {withCredentials: true})
+  getUsers(limit: number = 5) {
+    return this.http.get(this._apiRoute.getUsers + "?limit=" + limit + 
+      "&desc=true", <RequestOptionsArgs> {withCredentials: true})
       .map((res: Response) => res.json())
       .catch(this.handleError);
   }
 
   getMe() {
-    return this.http.get(this._api + '/api/users/me/', <RequestOptionsArgs> {withCredentials: true})
+    return this.http.get(this._apiRoute.getMe, 
+      <RequestOptionsArgs> {withCredentials: true})
       .map((res: Response) => res.json().me)
       .catch(this.handleError);
   }

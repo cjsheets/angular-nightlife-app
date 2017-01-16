@@ -32,8 +32,8 @@ router.use('/auth', auth);
 
 // Landing page
 router.get('/', function(req, res, next) {
-  res.json({"apiRoot": true});
-  // res.render('index.ejs'); // Debug landing page
+//  res.json({"apiRoot": true});
+   res.render('index.ejs'); // Debug landing page
 });
 
 // Login Form
@@ -57,21 +57,21 @@ router.get('/signup', function(req, res, next) {
 
 // Signup Form - Process submission
 // Enabled for server debugging
-// router.post('/signup', passport.authenticate('local-signup', {
-//   successRedirect : '/profile',
-//   failureRedirect : '/signup',
-//   failureFlash : true // allow flash messages
-// }));
+router.post('/signup', passport.authenticate('local-signup', {
+  successRedirect : '/profile',
+  failureRedirect : '/signup',
+  failureFlash : true // allow flash messages
+}));
 
 // Protected session information page
 // Enabled for server debugging
-// router.get('/profile', function(req, res, next) {
-//   res.render('profile.ejs', {
-//   // we will want this protected so you have to be logged in to visit
-//   // we will use route middleware to verify this (the isNotAuthOrRedirect function)
-//   user : req.user // get the user out of session and pass to template
-//   });
-// });
+router.get('/profile', function(req, res, next) {
+  res.render('profile.ejs', {
+  // we will want this protected so you have to be logged in to visit
+  // we will use route middleware to verify this (the isNotAuthOrRedirect function)
+  user : req.user // get the user out of session and pass to template
+  });
+});
 
 // Landing page
 router.get('/logout', function(req, res, next) {

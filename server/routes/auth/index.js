@@ -50,7 +50,8 @@ router.get('/google',
 // Handle callback after Google authentication
 router.get('/google/callback',
   passport.authenticate('google', {
-    successRedirect : '/search',
+//    successRedirect : '/search',
+    successRedirect : '/profile',
     failureRedirect : '/'
   })
 );

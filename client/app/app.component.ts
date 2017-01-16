@@ -20,7 +20,7 @@ export class AppComponent implements OnInit, OnDestroy {
   userServiceSub: Subscription;
   authSub: Subscription;
 //  private _api: string = 'https://angular-nightlife.herokuapp.com';
-  private _api: string = 'http://127.0.0.1:5000';
+  private _api: string = 'https://angular-nightlife.herokuapp.com';
 
   constructor(
     private _auth: AuthService,
@@ -58,6 +58,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
      let source = Observable.interval(2000)
       .map(() => {
+        console.log('polling, 2 seconds')
         this.userServiceSub = this.authenticated().subscribe(data => {
           if (data) {
           this._router.navigate(['/']);
