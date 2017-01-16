@@ -1,15 +1,15 @@
 var _      = require('lodash');
 
-// All configurations will extend these options
-// ============================================
-var all = {
+// Set default node environment to development
+var env = process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
-  // Should we populate the DB with sample data?
-  seedDB              : false,
+// Default configuration, extended by *NODE_ENV*.env.js
+var all = {
+  seedDB              : false,  // Seed database with sample data
 
   // Node.js Params
   node: {
-    env               : process.env.NODE_ENV  || 'development',
+    env               : process.env.NODE_ENV,
     port              : process.env.PORT || 9000,
     ip                : process.env.IP || '0.0.0.0',
   },
@@ -17,9 +17,7 @@ var all = {
   // Express.js Params
   express: {
     allowed_origins   : ['http://localhost:4200', 
-      'https://angular-nightlife.herokuapp.com'],
-    // Anything not matching this pattern returns 404
-    valid_routes      : '/:url(api|auth|nl)/*'
+      'https://angular-nightlife.herokuapp.com']
   },
 };
 
@@ -28,5 +26,5 @@ var all = {
 // ==============================================
 module.exports = _.merge(
   all,
-  require(`./${all.node.env  || 'development'}.env.js`) || {});
+  require(`./${env}.env.js`) || {});
   

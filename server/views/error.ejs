@@ -1,3 +1,3 @@
 <h1><%= message %></h1>
-<h2><%= error.status %></h2>
-<pre><%= error.stack %></pre>
+<h2><%= error.status || 'There was an error' %></h2>
+<pre><%= error.stack || 'Thats all we know' %></pre>
