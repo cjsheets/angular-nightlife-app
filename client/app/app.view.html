@@ -28,11 +28,10 @@
   <router-outlet></router-outlet>
 
 </div>
-  <!--Debugging
-<div class="container-fluid white">
+  <!--Debugging -->
+<div class="container-fluid" style="background: #FFFFFF;">
   <div class="row">
     <div class="col-sm">
-      <hr>
       <b style="color: darkgreen">Debugging: </b>
       &nbsp; &nbsp; - &nbsp; &nbsp;
       <b>route: </b> {{activeRoute}}
@@ -46,9 +45,12 @@
       <a [routerLink]="['/nl/demo']">/demo</a>,
 
       &nbsp; &nbsp; - &nbsp; &nbsp;
+      <button (click)="openAuthWindow('google')" class="btn btn-secondary btn-sm">
+        Google
+      </button>
     </div>
   </div>
-</div> -->
+</div>
 
 <footer class="text-center">
   <!-- https://www.flickr.com/photos/lennykphotography/17390996656/ -->

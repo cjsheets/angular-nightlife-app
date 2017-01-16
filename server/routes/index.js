@@ -3,20 +3,20 @@
  */
 var express     = require('express')
 var passport    = require('passport');
+var path        = require('path');
 var authHelper  = require('./authHelper')
+var env         = require('../config/environment');
 var router      = express.Router()
 
 // Import all other route modules
 var auth        = require('./auth');
-
-const allowedOrigins = ['http://localhost:4200', 'https://angular-nightlife.herokuapp.com'];
 
 /**
  * Restrict access to pre-defined origins
  */
 router.use(function(request, response, next) {
   var origin = request.headers.origin;
-  if (allowedOrigins.indexOf(origin) > -1) {
+  if (env.express.allowed_origins.indexOf(origin) > -1) {
     response.setHeader('Access-Control-Allow-Origin', origin);
   }
   response.setHeader('Access-Control-Allow-Headers', 'Content-Type,X-Requested-With');
@@ -32,7 +32,8 @@ router.use('/auth', auth);
 
 // Landing page
 router.get('/', function(req, res, next) {
-  res.render('index.ejs'); // load the index.ejs file
+  res.json({"apiRoot": true});
+  // res.render('index.ejs'); // Debug landing page
 });
 
 // Login Form
@@ -55,34 +56,37 @@ router.get('/signup', function(req, res, next) {
 });
 
 // Signup Form - Process submission
-router.post('/signup', passport.authenticate('local-signup', {
-  successRedirect : '/profile',
-  failureRedirect : '/signup',
-  failureFlash : true // allow flash messages
-}));
+// Enabled for server debugging
+// router.post('/signup', passport.authenticate('local-signup', {
+//   successRedirect : '/profile',
+//   failureRedirect : '/signup',
+//   failureFlash : true // allow flash messages
+// }));
 
-// Protected profile page
-router.get('/profile', function(req, res, next) {
-  res.render('profile.ejs', {
-  // we will want this protected so you have to be logged in to visit
-  // we will use route middleware to verify this (the isNotAuthOrRedirect function)
-  user : req.user // get the user out of session and pass to template
-  });
-});
+// Protected session information page
+// Enabled for server debugging
+// router.get('/profile', function(req, res, next) {
+//   res.render('profile.ejs', {
+//   // we will want this protected so you have to be logged in to visit
+//   // we will use route middleware to verify this (the isNotAuthOrRedirect function)
+//   user : req.user // get the user out of session and pass to template
+//   });
+// });
 
 // Landing page
 router.get('/logout', function(req, res, next) {
   req.logout();
-  res.redirect('/');
+  res.json({"loggedOut": req.isAuthenticated()});
+//  res.redirect('/'); // Debug logout redirect
 });
 
 /**
  * Anything else under '/', facilitates Angular HTML 5 routing. Must
  * declare below all other routes to avoid catching their requests
  */
-router.get("/*", authHelper.isAuthOrRedirect, function(req, res, next) {
-  res.sendFile(path.join(__dirname, '../', 'index.html'));
-  //res.render('index');
-});
+// router.get("/*", authHelper.isAuthOrRedirect, function(req, res, next) {
+//   res.sendFile(path.join(__dirname, '../', 'index.html'));
+//   //res.render('index');
+// });
 
 module.exports = router;

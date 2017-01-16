@@ -39,7 +39,7 @@ app.set('views', path.join(__dirname, '../views'));
 app.set('view engine', 'ejs'); // set up ejs for templating
 
 // Initialize passport
-app.use(session({ secret: env.node.session_secret }));
+app.use(session({ secret: env.express.session_secret }));
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session

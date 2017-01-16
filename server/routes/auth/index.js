@@ -8,6 +8,11 @@ var passport    = require('passport');
 var authHelper  = require('../authHelper')
 var router      = express.Router()
 
+// User is authenticated
+router.get('/valid', authHelper.isAuth, function(req, res, next) {
+  res.json({"authenticated": true});
+});
+
 /**
  * Authorization route for Facebook provider
  */
@@ -17,7 +22,7 @@ router.get('/facebook',
 // Handle callback after Facebook authentication
 router.get('/facebook/callback',
   passport.authenticate('facebook', {
-    successRedirect : '/profile',
+    successRedirect : '/search',
     failureRedirect : '/'
   })
 );
@@ -31,7 +36,7 @@ router.get('/twitter',
 // Handle callback after Twitter authentication
 router.get('/twitter/callback',
   passport.authenticate('twitter', {
-    successRedirect : '/profile',
+    successRedirect : '/search',
     failureRedirect : '/'
   })
 );
@@ -45,7 +50,7 @@ router.get('/google',
 // Handle callback after Google authentication
 router.get('/google/callback',
   passport.authenticate('google', {
-    successRedirect : '/profile',
+    successRedirect : '/search',
     failureRedirect : '/'
   })
 );
