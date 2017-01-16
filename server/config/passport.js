@@ -31,40 +31,55 @@ passport.deserializeUser(function(id, done) {
  *   Facebook provides the token and profile info
  *   which we'll store in our database
  */
-function facebookLogin(token, refreshToken, profile, done) { // async callback
+function facebookLogin(req, token, refreshToken, profile, done) { // async callback
   // Passport standardizes callbacks with profile object
   //  - http://passportjs.org/guide/profile/
   // User.findOne wont fire unless data is sent back
   process.nextTick(function() {
-    // Find user in database using Facebook ID
-    User.findOne({ 'facebook.id' : profile.id }, function(err, user) {
-      if (err) return done(err); // ie. error connecting to the database
-      if (user) { 
-        return done(null, user); // user found, return that user
+    if (!req.user) { // Is user already logged in?
+      // Find user in database using Facebook ID
+      User.findOne({ 'facebook.id' : profile.id }, function(err, user) {
+        if (err) return done(err); // ie. error connecting to the database
+        if (user) { 
+          return done(null, user); // user found, return that user
 
-      } else {
-        // See: passport user profile for how names are returned       
-        var newUser             = new User();
-        newUser.facebook.id     = profile.id; // Facebook ID                   
-        newUser.facebook.token  = token; // Facebook provided user token       
-        newUser.facebook.name   = profile.name.givenName + ' ' + profile.name.familyName;
-        newUser.facebook.email  = profile.emails[0].value; // Array of emails returned
+        } else {
+          // See: passport user profile for how names are returned       
+          var newUser             = new User();
+          newUser.facebook.id     = profile.id; // Facebook ID                   
+          newUser.facebook.token  = token; // Facebook provided user token       
+          newUser.facebook.name   = profile.name.givenName + ' ' + profile.name.familyName;
+          newUser.facebook.email  = profile.emails[0].value; // Array of emails returned
 
-        newUser.save(function(err) { // Commit to database
-          if (err) throw err;
-          return done(null, newUser); // User added, return the new user
-        });
-      }
-    }); // / User.findOne({..
+          newUser.save(function(err) { // Commit to database
+            if (err) throw err;
+            return done(null, newUser); // User added, return the new user
+          });
+        }
+      }); // / User.findOne({..
+
+    } else { // user exists and is logged in, link accounts
+      var existingUser            = req.user; // pull the user out of the session
+      existingUser.facebook.id    = profile.id; // update facebook credentials
+      existingUser.facebook.token = token;
+      existingUser.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName;
+      existingUser.facebook.email = profile.emails[0].value;
+
+      existingUser.save(function(err) { // Commit to database
+        if (err) throw err;
+        return done(null, existingUser); // User linked, return the new user
+      });
+     }
   });
 };
 
 function newFacebookStrategy(callback){
   return new FacebookStrategy({
-    clientID      : env.facebook.client_id,
-    clientSecret  : env.facebook.client_secret,
-    callbackURL   : env.facebook.callback,
-    profileFields : ['name', 'displayName', 'emails']
+    clientID          : env.facebook.client_id,
+    clientSecret      : env.facebook.client_secret,
+    callbackURL       : env.facebook.callback,
+    profileFields     : ['name', 'displayName', 'emails'],
+    passReqToCallback : true  // pass in req from route (check if already logged in)
   }, callback);
 }
 passport.use(newFacebookStrategy(facebookLogin));
@@ -74,9 +89,10 @@ passport.use(newFacebookStrategy(facebookLogin));
  *   Twitter provides the token and profile info
  *   which we'll store in our database
  */
-function twitterLogin(token, tokenSecret, profile, done) { // async callback
+function twitterLogin(req, token, tokenSecret, profile, done) { // async callback
   // User.findOne wont fire unless data is sent back
   process.nextTick(function() {
+    if (!req.user) { // Is user already logged in?
     // Find user in database using Twitter ID
     User.findOne({ 'twitter.id' : profile.id }, function(err, user) {
       if (err) return done(err); // ie. error connecting to the database
@@ -97,14 +113,29 @@ function twitterLogin(token, tokenSecret, profile, done) { // async callback
         });
       }
     }); // / User.findOne({..
+
+    } else { // user exists and is logged in, link accounts
+    var existingUser                    = req.user; // pull the user out of the session
+      existingUser.twitter.id           = profile.id; // Twitter ID                   
+      existingUser.twitter.token        = token; // Twitter provided user token
+      existingUser.twitter.username     = profile.username;
+      existingUser.twitter.displayName  = profile.displayName;
+      existingUser.twitter.photo        = profile.photos[0].value; // Array of photos returned
+
+      existingUser.save(function(err) { // Commit to database
+        if (err) throw err;
+        return done(null, existingUser); // User linked, return the new user
+      });
+     }
   });
 };
 
 function newTwitterStrategy(callback){
   return new TwitterStrategy({
-    consumerKey     : env.twitter.consumer_key,
-    consumerSecret  : env.twitter.consumer_secret,
-    callbackURL     : env.twitter.callback
+    consumerKey       : env.twitter.consumer_key,
+    consumerSecret    : env.twitter.consumer_secret,
+    callbackURL       : env.twitter.callback,
+    passReqToCallback : true  // pass in req from route (check if already logged in)
   }, callback);
 }
 passport.use(newTwitterStrategy(twitterLogin));
@@ -114,9 +145,10 @@ passport.use(newTwitterStrategy(twitterLogin));
  *   Google provides the token and profile info
  *   which we'll store in our database
  */
-function googleLogin(token, refreshToken, profile, done) { // async callback
+function googleLogin(req, token, refreshToken, profile, done) { // async callback
   // User.findOne wont fire unless data is sent back
   process.nextTick(function() {
+    if (!req.user) { // Is user already logged in?
     // Find user in database using Google ID
     User.findOne({ 'google.id' : profile.id }, function(err, user) {
       if (err) return done(err); // ie. error connecting to the database
@@ -136,14 +168,28 @@ function googleLogin(token, refreshToken, profile, done) { // async callback
         });
       }
     }); // / User.findOne({..
+
+    } else { // user exists and is logged in, link accounts
+      var existingUser          = req.user; // pull the user out of the session
+      existingUser.google.id    = profile.id; // Google ID                   
+      existingUser.google.token = token; // Google provided user token
+      existingUser.google.name  = profile.displayName;
+      existingUser.google.email = profile.emails[0].value; // Array of photos returned
+
+      existingUser.save(function(err) { // Commit to database
+        if (err) throw err;
+        return done(null, existingUser); // User linked, return the new user
+      });
+     }
   });
 };
 
 function newGoogleStrategy(callback){
   return new GoogleStrategy({
-    clientID      : env.google.client_id,
-    clientSecret  : env.google.client_secret,
-    callbackURL   : env.google.callback
+    clientID          : env.google.client_id,
+    clientSecret      : env.google.client_secret,
+    callbackURL       : env.google.callback,
+    passReqToCallback : true  // pass in req from route (check if already logged in)
   }, callback);
 }
 passport.use(newGoogleStrategy(googleLogin));

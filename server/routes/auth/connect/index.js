@@ -9,56 +9,20 @@ var authHelper  = require('../../authHelper')
 var debug       = require('debug')('router:connect');
 var router      = express.Router()
 
-// locally --------------------------------
-app.get('/local', function(req, res) {
-res.render('connect-local.ejs', { message: req.flash('loginMessage') });
+/* -----------------------------------|
+ *|  Auth Handlers for Post Data
+ *|
+ *|  Recieve and handle data from forms
+ */
+
+/**
+ * Authorization route for Facebook, connect account
+ */
+router.get('/local', function(req, res) {
+  res.render('connect-local.ejs', { message: req.flash('loginMessage') });
 });
-app.post('/local', passport.authenticate('local-signup', {
-successRedirect : '/dev/profile', // redirect to the secure profile section
-failureRedirect : '/dev/local', // redirect back to the signup page if there is an error
-failureFlash : true // allow flash messages
-}));
-
-// facebook -------------------------------
-
-// send to facebook to do the authentication
-app.get('/facebook', passport.authorize('facebook', { scope : 'email' }));
-
-// handle the callback after facebook has authorized the user
-app.get('/facebook/callback',
-passport.authorize('facebook', {
-successRedirect : '/dev/profile',
-failureRedirect : '/dev/'
-}));
-
-// twitter --------------------------------
-
-// send to twitter to do the authentication
-app.get('/twitter', passport.authorize('twitter', { scope : 'email' }));
-
-// handle the callback after twitter has authorized the user
-app.get('/twitter/callback',
-passport.authorize('twitter', {
-successRedirect : '/dev/profile',
-failureRedirect : '/dev/'
-}));
-
-
-// google ---------------------------------
-
-// send to google to do the authentication
-app.get('/google', passport.authorize('google', { scope : ['profile', 'email'] }));
-
-// the callback after google has authorized the user
-app.get('/google/callback',
-passport.authorize('google', {
-successRedirect : '/dev/profile',
-failureRedirect : '/dev/'
-}));
-
-// Signup Form - Process submission
-// Enabled for server debugging
-router.post('/signup', function(req, res, next) {
+// Handle data posted from sign-up form
+router.post('/local', function(req, res, next) {
   // Implement custom passport callback for req. access
   passport.authenticate('local-signup', function(err, user, info){
     debug('Local authentication: /signup')
@@ -68,6 +32,78 @@ router.post('/signup', function(req, res, next) {
       if (err) return next(err)
       req.flash();
       debug('Authentication Successful, return to: ' + req.session.returnTo || '/');
+      return res.redirect(req.session.returnTo + '/profile' || '/');
+    });
+  })(req, res, next);
+});
+
+/* -----------------------------------|
+ *|  Auth Handlers for 3rd Party Providers
+ *|
+ *|  See the commented-out Google handler
+ *|  for an example of the standard passport
+ *|  callback syntax
+ */
+
+/**
+ * Authorization route for Facebook, connect account
+ */
+router.get('/facebook',
+  passport.authorize('facebook', { scope : 'email' }));
+
+// Handle callback after Facebook authorization
+router.get('/facebook/callback', function(req, res, next) {
+  // Implement custom passport callback for req. access
+  passport.authorize('facebook', function(err, user, info){
+    debug('Connect Facebook: authorize callback')
+    if (err) return next(err)
+    if (!user) return res.redirect(req.session.returnTo || '/');
+    req.logIn(user, function(err) {
+      if (err) return next(err)
+      debug('Authorization Successful, return to: ' + req.session.returnTo || '/');
+      return res.redirect(req.session.returnTo + '/profile' || '/');
+    });
+  })(req, res, next);
+});
+
+/**
+ * Authorization route for Twitter, connect account
+ */
+router.get('/twitter',
+  passport.authorize('twitter', { scope : 'email' }));
+
+// Handle callback after Twitter authorization
+router.get('/twitter/callback', function(req, res, next) {
+  // Implement custom passport callback for req. access
+  passport.authorize('twitter', function(err, user, info){
+    debug('Connect Twitter: authorize callback')
+    if (err) return next(err)
+    if (!user) return res.redirect(req.session.returnTo || '/');
+    req.logIn(user, function(err) {
+      if (err) return next(err)
+      debug('Authorization Successful, return to: ' + req.session.returnTo || '/');
+      return res.redirect(req.session.returnTo + '/profile' || '/');
+    });
+  })(req, res, next);
+});
+
+
+/**
+ * Authorization route for Google, connect account
+ */
+router.get('/google',
+  passport.authorize('google', { scope : ['profile', 'email'] }));
+
+// Handle callback after Google authorization
+router.get('/google/callback', function(req, res, next) {
+  // Implement custom passport callback for req. access
+  passport.authorize('google', function(err, user, info){
+    debug('Connect Google: authorize callback')
+    if (err) return next(err)
+    if (!user) return res.redirect(req.session.returnTo || '/');
+    req.logIn(user, function(err) {
+      if (err) return next(err)
+      debug('Authorization Successful, return to: ' + req.session.returnTo || '/');
       return res.redirect(req.session.returnTo + '/profile' || '/');
     });
   })(req, res, next);
