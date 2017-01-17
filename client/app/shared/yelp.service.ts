@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response } from '@angular/http';
 
-import { Logger } from "../shared/logger.service";
+import { Logger } from "./logger.service";
 import * as Raven from 'raven-js';
 
 import { Observable } from 'rxjs/Observable';
@@ -19,19 +19,19 @@ export class YelpService {
     public searchTerm: string = '';
     public searchResult$: ReplaySubject<{}> = new ReplaySubject(1);
 
-    constructor(
-      private _http: Http,
-      private _log: Logger
-    ){}
+  constructor(
+    private _http: Http,
+    private _log: Logger
+  ){}
 
-    getBusinesses(location: string) {
-      this.get(this.apiEndpoint + location).subscribe(res => {
-        this._log['log']('getBusinesses(): ', res);
-        //this._log['log']('getBusinesses() - response: ', JSON.stringify(res));
-        this.searchResult$.next(res);
-      }, err => this.handleError(err));
-      this.searchTerm = location;
-    }
+  getBusinesses(location: string) {
+    this.get(this.apiEndpoint + location).subscribe(res => {
+      this._log['log']('getBusinesses(): ', res);
+      //this._log['log']('getBusinesses() - response: ', JSON.stringify(res));
+      this.searchResult$.next(res);
+    }, err => this.handleError(err));
+    this.searchTerm = location;
+  }
 
   createAuthHeader(headers: Headers) : void {
     headers.append('Authorization','Bearer ' + env.yelp.access_token); 

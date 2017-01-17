@@ -29,11 +29,12 @@ export class AuthService {
   constructor(
     private http: Http, 
     private _log: Logger,
-    @Inject('api-url') private _api: string,
+    @Inject('api-url') private _api: string
   ) {}
 
   public isLoggedIn() {
-    this.isAuthentic().subscribe(auth => this.authStatus = auth);
+    this.isAuthentic()
+      .subscribe(auth => this.authStatus = auth);
   }
 
   public redirectToProvider(provider: string) {

@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription }   from 'rxjs/Subscription';
 import { AuthService } from "./shared/auth.service";
+import { ApiService } from "./shared/api.service";
 import { AuthValidResponse } from "./shared/interface/auth.interface";
 import { YelpService } from "./shared/yelp.service";
 
@@ -21,6 +22,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(
     private _auth: AuthService,
+    private _api: ApiService,
     private _yelp: YelpService,
     private _log: Logger,
     private _router: Router
@@ -38,6 +40,11 @@ export class AppComponent implements OnInit, OnDestroy {
 
   checkLoggedIn() {
     this._auth.isLoggedIn();
+  }
+
+  getAttendance() {
+    this._api.getMyAttendance();
+    console.log(this._api.myAttendance);
   }
 
   logout() {

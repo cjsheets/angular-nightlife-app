@@ -8,6 +8,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbAlertComponent } from './alert.component';
 
 import { AuthService } from './auth.service';
+import { ApiService } from './api.service';
 import { YelpService } from './yelp.service';
 import { Logger, ConsoleLogService } from './logger.service';
 
@@ -31,6 +32,7 @@ import { RavenErrorHandler } from './sentry-io.service';
   ],
   providers: [
     AuthService,
+    ApiService,
     YelpService,
     { provide: Logger, useClass: ConsoleLogService },
     { provide: ErrorHandler, useClass: RavenErrorHandler },
