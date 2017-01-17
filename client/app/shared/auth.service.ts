@@ -25,8 +25,8 @@ export class AuthService {
   };
 
   private subs: Subscription[] = [];
-  private authStatus$: Observable<boolean>;
-  private authStatus: boolean = false;
+  private authStatus$
+  public authStatus: boolean = false;
 
   constructor(
     private http: Http, 
@@ -34,11 +34,8 @@ export class AuthService {
     @Inject('api-url') private _api: string,
   ) {}
 
-  public isLoggedIn(): Observable<boolean> {
-    if (this.authStatus$) return this.authStatus$;
-    this.authStatus$ = this.isAuthentic()
-      .map((data: AuthValidResponse) =>  data.authenticated);
-    return this.authStatus$;
+  public isLoggedIn() {
+    this.isAuthentic().subscribe(auth => this.authStatus = auth);
   }
 
   public redirectToProvider(provider: string) {
@@ -48,10 +45,13 @@ export class AuthService {
 
   private isAuthentic(): Observable<AuthValidResponse> {
     this._log['log']('auth::isAuthentic(): ', this._apiRoute.authentic);
-    return this.http.get(this._apiRoute.authentic, 
-      <RequestOptionsArgs> {withCredentials: true})
-      .map((res: Response) => res.json())
-      .catch(this.handleError);
+    return this.http
+      .get(this._apiRoute.authentic, <RequestOptionsArgs> {withCredentials: true})
+      .map((res: Response) => res.json().authenticated)
+      .catch((err:Response) => {
+        if(err.json().authenticated === false) this.authStatus = false;
+        return Observable.throw({detail:err.json(),status: err.status});
+      });
   }
 
   login(user) {

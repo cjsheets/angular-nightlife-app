@@ -3,7 +3,9 @@ import { CommonModule } from '@angular/common';
 import { HttpModule } from '@angular/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MasonryModule } from 'angular2-masonry';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
+import { NgbAlertComponent } from './alert.component';
 
 import { AuthService } from './auth.service';
 import { YelpService } from './yelp.service';
@@ -14,12 +16,17 @@ import { RavenErrorHandler } from './sentry-io.service';
 @NgModule({
   imports: [
     CommonModule,
-    HttpModule
+    HttpModule,
+    NgbModule.forRoot(),
+  ],
+  declarations: [
+    NgbAlertComponent // To-Do: setup alert I/O
   ],
   exports : [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    NgbAlertComponent,
     MasonryModule
   ],
   providers: [

@@ -25,6 +25,8 @@
     </div>
   </div> <!-- / container-fluid -->
 
+  <ngb-alert-component></ngb-alert-component>
+
   <router-outlet></router-outlet>
 
 </div>
@@ -57,7 +59,7 @@
         Logout
       </button>
       <button (click)="checkLoggedIn()" class="btn btn-secondary btn-sm">
-        Test: {{authStatus}}
+        Test: {{_auth.authStatus}}
       </button>
     </div>
   </div>

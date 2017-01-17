@@ -37,12 +37,8 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   checkLoggedIn() {
-    console.log(this.authStatus);
-    this.subs[this.subs.length] = this._auth.isLoggedIn()
-      .subscribe(auth => {
-        this.authStatus = auth;
-        return auth;
-      }); // 'Completes' after http request
+    this._auth.isLoggedIn();
+    console.log(this._auth.authStatus)
   }
 
   logout() {
