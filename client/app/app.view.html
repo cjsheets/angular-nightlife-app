@@ -34,28 +34,30 @@
     <div class="col-sm">
       <b style="color: darkgreen">Debugging: </b>
       &nbsp; &nbsp; - &nbsp; &nbsp;
-      <b>route: </b> {{activeRoute}}
+      <b>activeRoute: </b> {{activeRoute}}
 
       <b>searchTerm: </b> {{_yelp.searchTerm}}
 
       &nbsp; &nbsp; - &nbsp; &nbsp;
 
       <a [routerLink]="['/nl/']">/ root</a>,
-      <a [routerLink]="['/nl/search']">/search</a>,
-      <a [routerLink]="['/nl/demo']">/demo</a>,
+      <a [routerLink]="['/nl/search']">/search</a>
 
       &nbsp; &nbsp; - &nbsp; &nbsp;
-      <button (click)="redirectAuth('google')" class="btn btn-secondary btn-sm">
+      <button (click)="_auth.redirectToProvider('google')" class="btn btn-secondary btn-sm">
         Google
       </button>
-      <button (click)="redirectAuth('twitter')" class="btn btn-secondary btn-sm">
+      <button (click)="_auth.redirectToProvider('twitter')" class="btn btn-secondary btn-sm">
         Twitter
       </button>
-      <button (click)="redirectAuth('facebook')" class="btn btn-secondary btn-sm">
+      <button (click)="_auth.redirectToProvider('facebook')" class="btn btn-secondary btn-sm">
         Facebook
       </button>
-      <button (click)="isAuthenticated()" class="btn btn-secondary btn-sm">
-        Test: {{isAuth}}
+      <button (click)="_auth.logout()" class="btn btn-secondary btn-sm">
+        Logout
+      </button>
+      <button (click)="checkLoggedIn()" class="btn btn-secondary btn-sm">
+        Test: {{authStatus}}
       </button>
     </div>
   </div>

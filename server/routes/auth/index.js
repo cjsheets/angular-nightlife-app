@@ -22,6 +22,11 @@ router.get('/valid', authHelper.isAuth, function(req, res, next) {
 router.get('/logout', function(req, res, next) {
   req.logout();
   debug('Logged out, return to: ' + (req.session.returnTo || '/'));
+  res.json({"authenticated": false});
+});
+router.get('/logout_redir', function(req, res, next) {
+  req.logout();
+  debug('Logged out, return to: ' + (req.session.returnTo || '/'));
   res.redirect(req.session.returnTo || '/');
 });
 

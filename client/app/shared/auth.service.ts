@@ -5,7 +5,9 @@ import { Injectable, Inject } from '@angular/core';
 
 import { Http, Response, Headers, RequestOptions, RequestOptionsArgs } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
+import { Subscription }   from 'rxjs/Subscription';
 import 'rxjs/add/observable/throw';
+import { AuthValidResponse } from "./interface/auth.interface";
 
 import { Logger } from '../shared/logger.service';
 import * as Raven from 'raven-js';
@@ -13,25 +15,40 @@ import * as Raven from 'raven-js';
 @Injectable()
 export class AuthService {
   private _apiRoute = {
-    login: this._api + '/auth/local',
-    logout: this._api + '/auth/logout',
-    authenticate: this._api + '/auth/valid',
-    register: this._api + '/api/users/register',
+    login: this._api + '/auth/local',             // Login using local credentials
+    logout: this._api + '/auth/logout',           // Logout user
+    authentic: this._api + '/auth/valid',         // Is user logged in
+    register: this._api + '/api/users/register',  // Register new local credentials
     getUsers: this._api + '/api/users',
     getMe: this._api + '/api/users/me',
     userExists: this._api + '/api/users/exists',
   };
-  
+
+  private subs: Subscription[] = [];
+  private authStatus$: Observable<boolean>;
+  private authStatus: boolean = false;
+
   constructor(
     private http: Http, 
     private _log: Logger,
     @Inject('api-url') private _api: string,
   ) {}
 
+  public isLoggedIn(): Observable<boolean> {
+    if (this.authStatus$) return this.authStatus$;
+    this.authStatus$ = this.isAuthentic()
+      .map((data: AuthValidResponse) =>  data.authenticated);
+    return this.authStatus$;
+  }
 
-  authenticated() {
-    this._log['log']('auth::authenticated(): ', this._apiRoute.authenticate);
-    return this.http.get(this._apiRoute.authenticate, 
+  public redirectToProvider(provider: string) {
+    this._log['log']('auth::redirectToProvider(provider): ' + provider);
+    window.location.href=("/auth/" + provider);
+  }
+
+  private isAuthentic(): Observable<AuthValidResponse> {
+    this._log['log']('auth::isAuthentic(): ', this._apiRoute.authentic);
+    return this.http.get(this._apiRoute.authentic, 
       <RequestOptionsArgs> {withCredentials: true})
       .map((res: Response) => res.json())
       .catch(this.handleError);
@@ -50,11 +67,14 @@ export class AuthService {
   }
 
   logout() {
-    this._log['log']('auth::logout()');
-    return this.http.get(this._apiRoute.logout, 
+    this._log['log']('auth::logout() ', this._apiRoute.logout);
+    let isLoggedOut$ = this.http.get(this._apiRoute.logout, 
       <RequestOptionsArgs> {withCredentials: true})
       .map((res: Response) => res.json())
       .catch(this.handleError);
+    isLoggedOut$.subscribe((data: AuthValidResponse) => {
+        this._log['log']('Logged Out: ' + !data.authenticated)
+      });
   }
 
   register(user) {
