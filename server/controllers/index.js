@@ -3,7 +3,7 @@ var getVenueAttendance      = require('./getVenueAttendance');
 var setUserAttendance       = require('./setUserAttendance');
 
 module.exports = {
-  getUserAttendance: getUserAttendance,
-  getVenueAttendance: getVenueAttendance,
-  setUserAttendance: setUserAttendance
+  getUserAttendance   : getUserAttendance,
+  getVenueAttendance  : getVenueAttendance,
+  setUserAttendance   : setUserAttendance
 }

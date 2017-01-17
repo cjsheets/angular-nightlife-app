@@ -4,15 +4,22 @@
 
 var mongoose = require('mongoose');
 
-module.exports = mongoose.Schema({
+var venueSchema = mongoose.Schema({
 
-  venue           : {
-    id            : String,
-    attendees     : Number,
-  },
-  event           : {
-    venue_id      : String,
-    user_id       : String,
-  }
+  id            : { type : String, required : true, unique : true},
+  attendees     : { type : Number, required : true }
 
 });
+
+var eventSchema = mongoose.Schema({
+
+  venue_id      : String,
+  user_id       : String
+
+});
+
+module.exports = {
+  venueSchema   : venueSchema,
+  eventSchema   : eventSchema
+}
+ 

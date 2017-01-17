@@ -3,11 +3,11 @@
  *|  functions
  */
 
-var mongoose    = require('mongoose');
-var userSchema  = require('./user');
-var bcrypt      = require('bcrypt-nodejs');
-var db          = {};
-
+var mongoose          = require('mongoose');
+var venueSchema       = require('./nightlife').venueSchema;
+var eventSchema       = require('./nightlife').eventSchema;
+var userSchema        = require('./user');
+var bcrypt            = require('bcrypt-nodejs');
 
 /**
  * Helper Methods
@@ -23,8 +23,11 @@ userSchema.methods.validPassword = function(password) {
   return bcrypt.compareSync(password, this.local.password);
 };
 
-// Add models to export array
-db['User'] = mongoose.model('User', userSchema)
-
-// Expose the user model
-module.exports = db;
+/**
+ * Build and export model array
+ */
+module.exports = {
+  User        : mongoose.model('User', userSchema),
+  Venue       : mongoose.model('Venue', venueSchema),
+  Event       : mongoose.model('Event', eventSchema),
+}
