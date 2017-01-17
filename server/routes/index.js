@@ -9,10 +9,6 @@ var env         = require('../config/environment');
 var debug       = require('debug')('router:root');
 var router      = express.Router()
 
-// Import all other route modules
-var auth        = require('./auth');
-var dev         = require('./dev');
-
 /**
  * Restrict access to pre-defined origins
  */
@@ -30,8 +26,10 @@ router.use(function(req, res, next) {
 /**
  * "use" should be before any other route definitions
  */
-router.use('/auth', auth);
-if(env.express.dev_routes) router.use('/dev', dev);
+// Import all other route modules
+router.use('/api',      require('./api'));
+router.use('/auth',     require('./auth'));
+if(env.express.dev_routes) router.use('/dev', require('./dev'));
 
 // Return 404 for any undefined routes
 // router.get(env.express.valid_routes, function(req, res, next) {

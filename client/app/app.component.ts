@@ -38,7 +38,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
   checkLoggedIn() {
     this._auth.isLoggedIn();
-    console.log(this._auth.authStatus)
   }
 
   logout() {

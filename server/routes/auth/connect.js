@@ -5,7 +5,7 @@
  */
 var express     = require('express')
 var passport    = require('passport');
-var authHelper  = require('../../authHelper')
+var authHelper  = require('../authHelper')
 var debug       = require('debug')('router:connect');
 var router      = express.Router()
 

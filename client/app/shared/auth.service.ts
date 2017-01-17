@@ -24,9 +24,7 @@ export class AuthService {
     userExists: this._api + '/api/users/exists',
   };
 
-  private subs: Subscription[] = [];
-  private authStatus$
-  public authStatus: boolean = false;
+  public authStatus: boolean = false; // Holds last verified login state
 
   constructor(
     private http: Http, 
@@ -43,7 +41,7 @@ export class AuthService {
     window.location.href=("/auth/" + provider);
   }
 
-  private isAuthentic(): Observable<AuthValidResponse> {
+  private isAuthentic(): Observable<boolean> {
     this._log['log']('auth::isAuthentic(): ', this._apiRoute.authentic);
     return this.http
       .get(this._apiRoute.authentic, <RequestOptionsArgs> {withCredentials: true})

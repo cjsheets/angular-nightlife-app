@@ -7,11 +7,10 @@ var express     = require('express')
 var passport    = require('passport');
 var authHelper  = require('../authHelper')
 var debug       = require('debug')('router:auth');
-var router      = express.Router()
+var router      = express.Router();
 
 // Import all other route modules
-var connect      = require('./connect');
-router.use('/connect', connect);
+router.use('/connect',  require('./connect'));
 
 // User is authenticated
 router.get('/valid', authHelper.isAuth, function(req, res, next) {
