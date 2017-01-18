@@ -36,8 +36,8 @@ router.post('/venue/attendance', function(req, res) {
 
 // GET: Set attendance at venue with venue_id
 var setUserAttendance = require('../../controllers').setUserAttendance;
-router.get('/set/:venue_id', authHelper.isAuth, function(req, res) {
-  setUserAttendance(req.user._id, req.param.venue_id).then(function(set) {
+router.get('/set/:vid', authHelper.isAuth, function(req, res) {
+  setUserAttendance(req.user._id, req.params.vid).then(function(set) {
     res.json(set);
   }).catch(function(error) {
     res.json(error);
@@ -46,8 +46,8 @@ router.get('/set/:venue_id', authHelper.isAuth, function(req, res) {
 
 // GET: Remove attendance at venue with venue_id
 var removeUserAttendance = require('../../controllers').removeUserAttendance;
-router.get('/rm/:venue_id', authHelper.isAuth, function(req, res) {
-  removeUserAttendance(req.user._id, req.param.venue_id).then(function(set) {
+router.get('/rm/:vid', authHelper.isAuth, function(req, res) {
+  removeUserAttendance(req.user._id, req.params.venue_id).then(function(set) {
     res.json(set);
   }).catch(function(error) {
     res.json(error);

@@ -6,6 +6,6 @@ var removeUserAttendance    = require('./removeUserAttendance');
 module.exports = {
   getUserAttendance     : getUserAttendance,
   getVenueAttendance    : getVenueAttendance,
-  setUserAttendance     : setUserAttendance
+  setUserAttendance     : setUserAttendance,
   removeUserAttendance  : removeUserAttendance
 }

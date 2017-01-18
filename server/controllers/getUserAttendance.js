@@ -8,12 +8,10 @@ var mongoose          = require('mongoose');
  *
  * @param: string - `user_id` per their server-side session
  * 
- * @return: string[] - `venue_id` of each venue they're "attending"
+ * @return: [{venue_id: venue_id, user_id: user_id}, ...]
+ *           containing all venue_ids user is attending
  */
 
 module.exports = function(user_id) {
-  return Event.find({user_id: user_id}, function(err, events){
-    if(err) throw err;
-    console.log(events);
-  }).exec();
+  return Event.find({user_id: user_id}).exec();
 }

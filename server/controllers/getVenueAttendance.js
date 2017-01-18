@@ -8,11 +8,9 @@ var mongoose          = require('mongoose');
  *
  * @param: string[] - `venue_id`s in need of attendance numbers
  * 
- * @return: {string: number} - `venue_id`: `attendance` (total)
+ * @return: [{id: venue_id, attendees: ##}, ...]
  */
 
 module.exports = function(venues) {
-  return Venue.find({id: {$in: venues}}, function(err, events){
-    if(err) throw err;
-  }).exec();
+  return Venue.find({id: {$in: venues}}).exec();
 }
