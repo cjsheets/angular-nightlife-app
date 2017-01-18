@@ -3,6 +3,7 @@ import { Observable } from "rxjs";
 import { Attendance } from "../shared/model/attendance.model";
 
 import { ApiService } from "../shared/api.service";
+import { AuthService } from "../shared/auth.service";
 import { GetUserAttend, GetVenueAttend } from "../shared/interface/api.interface";
 import { YelpResponse, YelpBusiness } from '../shared/interface/yelp.interface';
 import { YelpService } from "../shared/yelp.service";
@@ -18,6 +19,7 @@ export class SearchComponent implements OnInit {
   private venues: string[] = []; // Array containing all venue ids being displayed
 
   constructor(
+    private _auth: AuthService,
     private _api: ApiService,
     private _yelp: YelpService,
     private _log: Logger
@@ -82,25 +84,36 @@ export class SearchComponent implements OnInit {
   }
 
   sendGoing(id){
-    this._log['log']('sendGoing(id)', id);
-    this._api.setAttendance(id)
-      .subscribe(res => {
-        this._log['log']('resposne', res);
-        this.updateViewAttendance();
-      });
+    if(this._auth.authStatus) {
+      this._log['log']('sendGoing(id)', id);
+      this._api.setAttendance(id)
+        .subscribe(res => {
+          this._log['log']('resposne', res);
+          this.updateViewAttendance();
+        });
+    } else {
+      this._auth.redirectToProvider('twitter');
+    }
   }
   sendNotGoing(id){
-    this._log['log']('sendNotGoing(id)', id);
-    this._api.removeAttendance(id)
-      .subscribe(res => {
-        this._log['log']('resposne', res);
-        this.updateViewAttendance();
-        this.bricks.some(brick => {
-          if(brick.id == id){
-            brick.attending = false;
-            return true;
-          }
+    if(this._auth.authStatus) {
+      this._log['log']('sendNotGoing(id)', id);
+      this._api.removeAttendance(id)
+        .subscribe(res => {
+          this._log['log']('resposne', res);
+          this.updateViewAttendance();
+          // interface only checks my-venues, must manually remove attending
+          this.bricks.some(brick => {
+            if(brick.id == id){
+              brick.attending = false;
+              return true;
+            }
+          });
         });
-      });
+    } else {
+      this._auth.redirectToProvider('twitter');
+    }
   }
+
+
 }
