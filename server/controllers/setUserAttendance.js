@@ -15,53 +15,47 @@ var getVenueAttendance  = require('./getVenueAttendance');
  */
 
 module.exports = function(uid, vid){
-  var promise = Event.find({user_id: uid, venue_id: vid}, function(err, events){
+  // First, check to ensure 'event' doesn't already exist
+  return Event.find({user_id: uid, venue_id: vid}, function(err, events){
     if(err) throw err;
-      console.log('events: ', events)
-  }).exec();
-  return promise.then(function(venues) {
-    if(venues.length !== 0){
-      console.log('Not there, continuing', venues)
-      return Promise.resolve('done')
+      console.log('First, check to ensure')
+  }).exec()
+  .then(function(existingEvent) {
+    if(existingEvent.length === 0){
+      // Event doesn't exist. Update venue and create event
+      console.log('Event doesnt exist. Update venue and create event')
+
+      return getVenueAttendance([vid])
+      .then(function(currentAttendance){
+
+        let attendance = (currentAttendance) ? currentAttendance + 1 : 1;
+
+        console.log('values: ', vid, attendance);
+        let venue = new Venue({
+          id          : vid,
+          attendees   : attendance
+        });
+
+        if(!currentAttendance) venue.isNew = true;
+        return venue.save(function(err){
+          if(err) throw err;
+        })
+        .then(function(savedVenue){ // Finally, create the event
+        console.log('now creating the event')
+
+          let event = new Event({
+            venue_id  : vid,
+            user_id   : uid
+          });
+
+          event.isNew = true;
+          return event.save(function(err){
+            if(err) throw err;
+          });
+        }); // .then(function(savedVenue)
+      }); // .then(function(currentAttendance)
     } else {
-      console.log('Found it...', venues)
-      console.log('length', venues.length)
-      console.log('events', venues.events)
-      console.log('user', uid)
-      console.log('venue', vid)
-      return Promise.resolve(vid)
+      return Promise.resolve({existingEvent: true})
     }
-  }).catch(function(error) {
-    res.json(error);
   });
-
-
-  // let venueDetails = getVenueAttendance([venue_id]);
-  // if(venueDetails) {
-  //   let attendind = venueDetails + 1, new = false;
-  // } else {
-  //   let attendind = 1, new = true;
-  // }
-
-  // let event = new Event({
-  //   venue_id  : venue_id,
-  //   user_id   : user_id
-  // });
-
-  // let venue = new Venue({
-  //   id          : venue_id,
-  //   attendees   : attendance
-  // });
-  
-  // event.isNew = true;
-  // event.save(function(err){
-  //   if(err) throw err;
-  //   console.log('saved');
-  // });
-  
-  // venue.isNew = true;
-  // venue.save(function(err){
-  //   if(err) throw err;
-  //   console.log('saved');
-  // });
 }

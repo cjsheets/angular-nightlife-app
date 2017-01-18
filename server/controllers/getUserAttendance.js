@@ -12,6 +12,8 @@ var mongoose          = require('mongoose');
  *           containing all venue_ids user is attending
  */
 
-module.exports = function(user_id) {
-  return Event.find({user_id: user_id}).exec();
+module.exports = function(uid) {
+  return Event.find({user_id: uid}, function(err, events){
+    if(err) throw err;
+  }).exec();
 }

@@ -12,5 +12,7 @@ var mongoose          = require('mongoose');
  */
 
 module.exports = function(venues) {
-  return Venue.find({id: {$in: venues}}).exec();
+  return Venue.find({id: {$in: venues}}, function(err, events){
+    if(err) throw err;
+  }).exec();
 }
