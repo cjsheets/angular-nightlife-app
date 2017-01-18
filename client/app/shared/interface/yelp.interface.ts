@@ -13,5 +13,8 @@ export interface YelpBusiness {
     coordinates: {
         latitude: number,
         longitude: number
-    }
+    },
+    // Extra metadata for view
+    attendance: number
+    attending: boolean
 }

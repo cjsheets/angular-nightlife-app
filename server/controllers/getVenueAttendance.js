@@ -8,7 +8,7 @@ var mongoose          = require('mongoose');
  *
  * @param: string[] - `venue_id`s in need of attendance numbers
  * 
- * @return: [{id: venue_id, attendees: ##}, ...]
+ * @return: [{venue_id: "id", attendees: ##}, ...]
  */
 
 module.exports = function(venues) {

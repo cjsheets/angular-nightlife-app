@@ -25,9 +25,16 @@
                 </div>
               </div>
 
-              <p>No one is currently going</p>
-              <button class="btn btn-secondary btn-going">
+              <p *ngIf="brick.attendance == 0">No one is currently going</p>
+              <p *ngIf="brick.attendance == 1">1 person is going</p>
+              <p *ngIf="brick.attendance > 1">{{brick.attendance}} people are going</p>
+              <button class="btn btn-secondary btn-going" *ngIf="!brick.attending" 
+                (click)="sendGoing(brick.id)">
                 I'm Going
+              </button>
+              <button class="btn btn-secondary btn-going" *ngIf="brick.attending" 
+                (click)="sendNotGoing(brick.id)">
+                I'm Not Going
               </button>
             </div>
           </div>
