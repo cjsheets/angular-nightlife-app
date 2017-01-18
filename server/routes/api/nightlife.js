@@ -14,7 +14,7 @@ router.get('/authenticated', authHelper.isAuth, function(req, res, next) {
   res.json({"authenticated": true});
 });
 
-// Return the venues attended by the authenticated user
+// GET: Venues attended by the authenticated user
 var getUserAttendance = require('../../controllers').getUserAttendance;
 router.get('/my/venues', authHelper.isAuth, function(req, res) {
   getUserAttendance(req.user._id).then(function(venues) {
@@ -24,29 +24,35 @@ router.get('/my/venues', authHelper.isAuth, function(req, res) {
   });
 });
 
-// Return the attendance number of each supplied venue_id
+// POST: Attendance number of each supplied venue_id ([id1, id2,...])
 var getVenueAttendance = require('../../controllers').getVenueAttendance;
-//router.get('/get_v', authHelper.isAuth, function(req, res) {
-router.get('/venue/attendance', function(req, res) {
-  var venues = req.query.venues || {};
-  getVenueAttendance(venues).then(function(attendance) {
+router.post('/venue/attendance', function(req, res) {
+  getVenueAttendance(req.body).then(function(attendance) {
     res.json(attendance);
   }).catch(function(error) {
     res.json(error);
   });
 });
 
-// var setUserAttendance = require('../../controllers').setUserAttendance;
-// router.get('/set', authHelper.isAuth, function(req, res) {
-//   var offset = request.query.offset || 0;
-//   var limit = request.query.limit || 50;
-//   var desc = request.query.desc || false;
-//   setUserAttendance(offset, limit, desc).then(function(users) {
-//     res.json(users);
-//   }).catch(function(error) {
-//     res.json(error);
-//   });
-// });
+// GET: Set attendance at venue with venue_id
+var setUserAttendance = require('../../controllers').setUserAttendance;
+router.get('/set/:venue_id', authHelper.isAuth, function(req, res) {
+  setUserAttendance(req.user._id, req.param.venue_id).then(function(set) {
+    res.json(set);
+  }).catch(function(error) {
+    res.json(error);
+  });
+});
+
+// GET: Remove attendance at venue with venue_id
+var removeUserAttendance = require('../../controllers').removeUserAttendance;
+router.get('/rm/:venue_id', authHelper.isAuth, function(req, res) {
+  removeUserAttendance(req.user._id, req.param.venue_id).then(function(set) {
+    res.json(set);
+  }).catch(function(error) {
+    res.json(error);
+  });
+});
 
 debug('Routes initialized successfully');
 module.exports = router;

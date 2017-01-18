@@ -47,6 +47,11 @@ export class AppComponent implements OnInit, OnDestroy {
     console.log(this._api.myAttendance);
   }
 
+  getVenues() {
+    this._api.getVenueAttendance(['this-is-an-id', 'this-isnt-stored', 'this-is-yet-another-id']);
+    console.log(this._api.venueAttendance);
+  }
+
   logout() {
     this._auth.logout()
   }

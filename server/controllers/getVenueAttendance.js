@@ -1,3 +1,7 @@
+var Venue             = require('../models').Venue;
+var mongoose          = require('mongoose');
+    mongoose.Promise  = require('bluebird');
+
 /**
  * This controller accepts a list of venue ids and searches
  * the database for attendance levels of each venue
@@ -7,5 +11,8 @@
  * @return: {string: number} - `venue_id`: `attendance` (total)
  */
 
-
-
+module.exports = function(venues) {
+  return Venue.find({id: {$in: venues}}, function(err, events){
+    if(err) throw err;
+  }).exec();
+}

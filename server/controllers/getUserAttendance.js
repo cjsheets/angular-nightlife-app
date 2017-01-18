@@ -12,10 +12,8 @@ var mongoose          = require('mongoose');
  */
 
 module.exports = function(user_id) {
-
   return Event.find({user_id: user_id}, function(err, events){
     if(err) throw err;
     console.log(events);
   }).exec();
-
 }
