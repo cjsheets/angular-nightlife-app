@@ -5,7 +5,7 @@ var mongoose            = require('mongoose');
 var getVenueAttendance  = require('./getVenueAttendance');
 
 /**
- * This controller adds/removes records in the database 
+ * This controller adds records to the database 
  * relating to a specific user and a specific venue
  *
  * @param: {venue_id  : string
@@ -25,37 +25,40 @@ module.exports = function(uid, vid){
       // Event doesn't exist. Update venue and create event
       console.log('Event doesnt exist. Update venue and create event')
 
-      return getVenueAttendance([vid])
-      .then(function(currentAttendance){
-
-        let attendance = (currentAttendance) ? currentAttendance + 1 : 1;
-
-        console.log('values: ', vid, attendance);
-        let venue = new Venue({
-          id          : vid,
-          attendees   : attendance
-        });
-
-        if(!currentAttendance) venue.isNew = true;
-        return venue.save(function(err){
-          if(err) throw err;
-        })
-        .then(function(savedVenue){ // Finally, create the event
-        console.log('now creating the event')
-
-          let event = new Event({
-            venue_id  : vid,
-            user_id   : uid
+      return Venue.findOne({id: vid}, function(err, venueRecord){
+        console.log('Record checked', venueRecord)
+        if(err) throw err;
+        if (venueRecord.length === 0) {
+        console.log('new venue');
+          let venue = new Venue({
+            id          : vid,
+            attendees   : 1
           });
-
-          event.isNew = true;
-          return event.save(function(err){
+          venue.isNew = true;
+          return venue.save(function(err){
             if(err) throw err;
           });
-        }); // .then(function(savedVenue)
-      }); // .then(function(currentAttendance)
+        } else {
+        console.log('existing venue');
+          venueRecord.attendees += 1;
+          return venueRecord.save(function(err){
+            if(err) throw err;
+          });
+        } 
+      }).exec().then(function(savedVenue){ // Finally, create the event
+        console.log('now creating the event')
+        let event = new Event({
+          venue_id  : vid,
+          user_id   : uid
+        });
+
+        event.isNew = true;
+        return event.save(function(err){
+          if(err) throw err;
+        });
+      }).catch(function(err){ throw err }); // .then(function(savedVenue)
     } else {
       return Promise.resolve({existingEvent: true})
     }
-  });
+  }).catch(function(err){ throw err });
 }
