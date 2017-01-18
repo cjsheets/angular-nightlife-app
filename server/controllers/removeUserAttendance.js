@@ -25,6 +25,7 @@ module.exports = function(uid, vid){
           venueRecord.attendees -= 1;
           return venueRecord.save(function(err){
             if(err) throw err;
+            return Promise.resolve({attendanceRemoved: true});
           });
         } 
       }).exec()

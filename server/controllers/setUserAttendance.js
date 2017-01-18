@@ -18,8 +18,7 @@ module.exports = function(uid, vid){
   // First, check to ensure 'event' doesn't already exist
   return Event.find({user_id: uid, venue_id: vid}, function(err, events){
     if(err) throw err;
-  }).exec()
-  .then(function(existingEvent) {
+  }).exec(function(err, existingEvent) {
     if(existingEvent.length === 0){
       // Event doesn't exist. Update venue and create event
 
@@ -29,6 +28,7 @@ module.exports = function(uid, vid){
           venueRecord.attendees += 1;
           return venueRecord.save(function(err){
             if(err) throw err;
+            return Promise.resolve({venueAttendanceRecorded: true});
           });
         } else {
           let venue = new Venue({
@@ -38,10 +38,10 @@ module.exports = function(uid, vid){
           venue.isNew = true;
           return venue.save(function(err){
             if(err) throw err;
+            return Promise.resolve({venueAttendanceRecorded: true});
           });
         } 
-      }).exec()
-      .then(function(savedVenue){ // Finally, create the event
+      }).exec(function(err, savedVenue){ // Finally, create the event
         let event = new Event({
           venue_id  : vid,
           user_id   : uid
@@ -50,6 +50,7 @@ module.exports = function(uid, vid){
         event.isNew = true;
         return event.save(function(err){
           if(err) throw err;
+          return Promise.resolve({myAttendanceRecorded: true});
         });
       }).catch(function(err){ throw err }); // .then(function(savedVenue)
     } else {

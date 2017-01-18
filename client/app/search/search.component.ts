@@ -37,39 +37,43 @@ export class SearchComponent implements OnInit {
         this.bricks.push(business);
         this.venues.push(business.id);
       });
-      this._api.getMyV()
-        .subscribe(myVenues => {
-          myVenues.forEach(venue => {
-            if(this.venues.indexOf(venue.venue_id) != -1){
-              // Like forEach or every, can be short-circuited returning `true`
-              this.bricks.some(brick => {
-                console.log('Found matching index for: ', venue.venue_id);
-                if(brick.id == venue.venue_id){
-                  brick.attending = true;
-                  return true;
-                }
-              });
-            }
-          });
-          console.log('getMyV', myVenues)
-        });  // subscribe(myVenues)
-      this._api.getTheseV(this.venues)
-        .subscribe(allVenues => {
-          allVenues.forEach(venue => {
-            if(this.venues.indexOf(venue.venue_id) != -1){
-               // Like forEach or every, can be short-circuited returning `true`
-              this.bricks.some(brick => {
-                console.log('Found matching index for: ', venue.venue_id);
-                if(brick.id == venue.venue_id){
-                  brick.attendance = venue.attendees;
-                  return true;
-                }
-              });
-            }
-          });
-          console.log('getAllV', allVenues)
-        }); // subscribe(allVenues)
+      this.updateViewAttendance();
     }); // subscribe((res: YelpResponse)
+  }
+
+  updateViewAttendance(){
+    this._api.getMyV()
+      .subscribe(myVenues => {
+        myVenues.forEach(venue => {
+          if(this.venues.indexOf(venue.venue_id) != -1){
+            // Like forEach or every, can be short-circuited returning `true`
+            this.bricks.some(brick => {
+              console.log('Found matching index for: ', venue.venue_id);
+              if(brick.id == venue.venue_id){
+                brick.attending = true;
+                return true;
+              }
+            });
+          }
+        });
+        console.log('getMyV', myVenues)
+      });  // subscribe(myVenues)
+    this._api.getTheseV(this.venues)
+      .subscribe(allVenues => {
+        allVenues.forEach(venue => {
+          if(this.venues.indexOf(venue.venue_id) != -1){
+              // Like forEach or every, can be short-circuited returning `true`
+            this.bricks.some(brick => {
+              console.log('Found matching index for: ', venue.venue_id);
+              if(brick.id == venue.venue_id){
+                brick.attendance = venue.attendees;
+                return true;
+              }
+            });
+          }
+        });
+        console.log('getAllV', allVenues)
+      }); // subscribe(allVenues)
   }
 
   search(f){
@@ -81,14 +85,22 @@ export class SearchComponent implements OnInit {
     this._log['log']('sendGoing(id)', id);
     this._api.setAttendance(id)
       .subscribe(res => {
-      this._log['log']('resposne', res);
+        this._log['log']('resposne', res);
+        this.updateViewAttendance();
       });
   }
   sendNotGoing(id){
     this._log['log']('sendNotGoing(id)', id);
     this._api.removeAttendance(id)
       .subscribe(res => {
-      this._log['log']('resposne', res);
+        this._log['log']('resposne', res);
+        this.updateViewAttendance();
+        this.bricks.some(brick => {
+          if(brick.id == id){
+            brick.attending = false;
+            return true;
+          }
+        });
       });
   }
 }
