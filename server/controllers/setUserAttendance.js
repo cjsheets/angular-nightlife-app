@@ -18,35 +18,30 @@ module.exports = function(uid, vid){
   // First, check to ensure 'event' doesn't already exist
   return Event.find({user_id: uid, venue_id: vid}, function(err, events){
     if(err) throw err;
-      console.log('First, check to ensure')
   }).exec()
   .then(function(existingEvent) {
     if(existingEvent.length === 0){
       // Event doesn't exist. Update venue and create event
-      console.log('Event doesnt exist. Update venue and create event')
 
-      return Venue.findOne({id: vid}, function(err, venueRecord){
-        console.log('Record checked', venueRecord)
-        if(err) throw err;
-        if (venueRecord.length === 0) {
-        console.log('new venue');
+      return Venue.findOne({venue_id: vid}, function(err, venueRecord){
+        if(err) throw err; // Create or update record in the venue collection
+        if (venueRecord && venueRecord.length !== 0) {
+          venueRecord.attendees += 1;
+          return venueRecord.save(function(err){
+            if(err) throw err;
+          });
+        } else {
           let venue = new Venue({
-            id          : vid,
+            venue_id    : vid,
             attendees   : 1
           });
           venue.isNew = true;
           return venue.save(function(err){
             if(err) throw err;
           });
-        } else {
-        console.log('existing venue');
-          venueRecord.attendees += 1;
-          return venueRecord.save(function(err){
-            if(err) throw err;
-          });
         } 
-      }).exec().then(function(savedVenue){ // Finally, create the event
-        console.log('now creating the event')
+      }).exec()
+      .then(function(savedVenue){ // Finally, create the event
         let event = new Event({
           venue_id  : vid,
           user_id   : uid

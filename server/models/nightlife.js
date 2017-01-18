@@ -6,7 +6,7 @@ var mongoose = require('mongoose');
 
 var venueSchema = mongoose.Schema({
 
-  id            : { type : String, required : true, unique : true},
+  venue_id      : { type : String, required : true, unique : true},
   attendees     : { type : Number, required : true }
 
 });

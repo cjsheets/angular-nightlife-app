@@ -47,7 +47,7 @@ router.get('/set/:vid', authHelper.isAuth, function(req, res) {
 // GET: Remove attendance at venue with venue_id
 var removeUserAttendance = require('../../controllers').removeUserAttendance;
 router.get('/rm/:vid', authHelper.isAuth, function(req, res) {
-  removeUserAttendance(req.user._id, req.params.venue_id).then(function(set) {
+  removeUserAttendance(req.user._id, req.params.vid).then(function(set) {
     res.json(set);
   }).catch(function(err) {
     res.json(err);
