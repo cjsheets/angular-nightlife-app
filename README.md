@@ -41,5 +41,6 @@ To get more help on the `angular-cli` use `ng --help` or go check out the [Angul
 * implement express-verification
 * improve loading icons when inteface is pending changes
 * improve error handling
-
+* different connect.session() MemoryStore solution
+* disable logging in production
 

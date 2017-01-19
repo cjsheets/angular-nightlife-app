@@ -39,7 +39,8 @@ import { RavenErrorHandler } from './sentry-io.service';
     YelpService,
     { provide: Logger, useClass: ConsoleLogService },
     { provide: ErrorHandler, useClass: RavenErrorHandler },
-    { provide: 'api-url', useValue: 'http://localhost:5000' },
+    //{ provide: 'api-url', useValue: 'http://localhost:5000' },
+    { provide: 'api-url', useValue: 'https://angular-nightlife.herokuapp.com/nl' },
   ],
 })
 export class SharedModule { }
