@@ -28,6 +28,7 @@ import { RavenErrorHandler } from './sentry-io.service';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    NgbModule,
     NgbAlertComponent,
     MasonryModule
   ],

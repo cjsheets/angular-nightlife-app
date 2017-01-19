@@ -6,6 +6,8 @@ import { ApiService } from "./shared/api.service";
 import { AuthValidResponse } from "./shared/interface/auth.interface";
 import { YelpService } from "./shared/yelp.service";
 
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+
 import { Logger } from './shared/logger.service';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/interval';
@@ -24,6 +26,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private _auth: AuthService,
     private _api: ApiService,
     private _yelp: YelpService,
+    private modalService: NgbModal,
     private _log: Logger,
     private _router: Router
   ){}
@@ -54,6 +57,15 @@ export class AppComponent implements OnInit, OnDestroy {
 
   logout() {
     this._auth.logout()
+  }
+
+  open(content) {
+    this._log['log']( "Open Modal" );
+    this.modalService.open(content).result.then((result) => {
+      this._log['log']( "Modal:" );
+    }, (reason) => {
+      this._log['log']( "Close Modal:" );
+    });
   }
 
   // /**

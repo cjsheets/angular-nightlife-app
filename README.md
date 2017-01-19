@@ -39,5 +39,7 @@ To get more help on the `angular-cli` use `ng --help` or go check out the [Angul
 * Rewrite error view from EJS to Jade
 * Sort out promise return values
 * implement express-verification
+* improve loading icons when inteface is pending changes
+* improve error handling
 
 
