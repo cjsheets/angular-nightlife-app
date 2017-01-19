@@ -10,7 +10,7 @@ import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 
-var env = require('../../environments');
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class YelpService {
@@ -25,8 +25,9 @@ export class YelpService {
   ){}
 
   getBusinesses(location: string) {
+    console.log('getBusinesses(): ', location);
     this.get(this.apiEndpoint + location).subscribe(res => {
-      this._log['log']('getBusinesses(): ', res);
+      //this._log['log']('getBusinesses(): ', res);
       //this._log['log']('getBusinesses() - response: ', JSON.stringify(res));
       this.searchResult$.next(res);
     }, err => this.handleError(err));
@@ -34,10 +35,11 @@ export class YelpService {
   }
 
   createAuthHeader(headers: Headers) : void {
-    headers.append('Authorization','Bearer ' + env.yelp.access_token); 
+    headers.append('Authorization','Bearer ' + environment.yelp.access_token); 
   }
 
   get(url) : Observable<Response> {
+    console.log('get(): ', environment.yelp.access_token);
     let headers = new Headers({'Content-Type': 'application/x-www-form-urlencoded'});
     this.createAuthHeader(headers);
     return this._http.get(url, {headers: headers})
@@ -55,7 +57,8 @@ export class YelpService {
 
   private handleError(err: Response) : Observable<Response> {
     let errorMessage = 'Http Response Error :: yelp.service';
-    this._log['error']('Http Response Error: ',err);
+    console.log(err);
+    //this._log['error']('Http Response Error: ',err);
     Raven.captureException(err.json().err || errorMessage);
     return Observable.throw(err.json().err || errorMessage);
   }

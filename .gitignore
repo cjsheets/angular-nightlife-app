@@ -34,6 +34,6 @@ testem.log
 .DS_Store
 Thumbs.db
 
+client/environments/environment.ts
+server/config/environment/development.env.js
 yelp.api
-*environment.ts
-*.env.js

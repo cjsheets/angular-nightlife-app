@@ -26,5 +26,5 @@ var all = {
 // ==============================================
 module.exports = _.merge(
   all,
-  require(`./${env}.env.js`) || require(`./${env}.js`) || {});
+  require(`./${env}.env.js`) || {});
   

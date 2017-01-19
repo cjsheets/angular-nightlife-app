@@ -43,4 +43,5 @@ To get more help on the `angular-cli` use `ng --help` or go check out the [Angul
 * improve error handling
 * different connect.session() MemoryStore solution
 * disable logging in production
+* investigate this._log undefined
 
