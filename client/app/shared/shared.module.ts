@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MasonryModule } from 'angular2-masonry';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
+import { CookieService } from 'angular2-cookie/services/cookies.service';
 import { NgbAlertComponent } from './alert.component';
 
 import { AuthService } from './auth.service';
@@ -33,6 +34,7 @@ import { RavenErrorHandler } from './sentry-io.service';
   providers: [
     AuthService,
     ApiService,
+    CookieService,
     YelpService,
     { provide: Logger, useClass: ConsoleLogService },
     { provide: ErrorHandler, useClass: RavenErrorHandler },

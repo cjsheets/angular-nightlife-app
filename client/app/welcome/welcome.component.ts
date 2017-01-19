@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { YelpService } from "../shared/yelp.service";
 import { Logger } from "../shared/logger.service";
+import {CookieService} from 'angular2-cookie/core';
 
 @Component({
   selector: "welcome",
@@ -14,6 +15,7 @@ import { Logger } from "../shared/logger.service";
 export class WelcomeComponent implements OnInit {
 
   constructor(
+    private _cookie: CookieService,
     private _yelp: YelpService,
     private _log: Logger,
     private _route: ActivatedRoute,
@@ -21,12 +23,25 @@ export class WelcomeComponent implements OnInit {
   ){}
 
   ngOnInit() {
-    
+    var lastSearch = this.getCookie('search');
+    if(lastSearch){
+      console.log('found a cookie', lastSearch)
+      this.removeCookie('search');
+      this.search({location: lastSearch});
+    }
   }
 
   search(values){
     this._log['log']('search(): ', values);
     this._yelp.getBusinesses(values.location);
     this._router.navigate(['/nl/search']);
+  }
+
+  getCookie(key: string){
+    return this._cookie.get(key);
+  }
+
+  removeCookie(key: string){
+    return this._cookie.remove(key);
   }
 }

@@ -8,6 +8,7 @@ import { GetUserAttend, GetVenueAttend } from "../shared/interface/api.interface
 import { YelpResponse, YelpBusiness } from '../shared/interface/yelp.interface';
 import { YelpService } from "../shared/yelp.service";
 import { Logger } from "../shared/logger.service";
+import {CookieService} from 'angular2-cookie/core';
 
 @Component({
   selector: "search",
@@ -19,6 +20,7 @@ export class SearchComponent implements OnInit {
   private venues: string[] = []; // Array containing all venue ids being displayed
 
   constructor(
+    private _cookie: CookieService,
     private _auth: AuthService,
     private _api: ApiService,
     private _yelp: YelpService,
@@ -40,6 +42,19 @@ export class SearchComponent implements OnInit {
         this.venues.push(business.id);
       });
       this.updateViewAttendance();
+
+      var lastGoing = this.getCookie('going');
+      if(lastGoing){
+        console.log('found a cookie', lastGoing)
+        this.removeCookie('lastGoing');
+        this.sendGoing(lastGoing);
+      }
+      var notGoing = this.getCookie('notgoing');
+      if(notGoing){
+        console.log('found a cookie', notGoing)
+        this.removeCookie('notgoing');
+        this.sendNotGoing(notGoing);
+      }
     }); // subscribe((res: YelpResponse)
   }
 
@@ -59,7 +74,7 @@ export class SearchComponent implements OnInit {
           }
         });
         console.log('getMyV', myVenues)
-      });  // subscribe(myVenues)
+      }) // subscribe(myVenues)  .catch(); 
     this._api.getTheseV(this.venues)
       .subscribe(allVenues => {
         allVenues.forEach(venue => {
@@ -92,9 +107,12 @@ export class SearchComponent implements OnInit {
           this.updateViewAttendance();
         });
     } else {
+      this.setCookie('going', id);
+      this.setCookie('search', this._yelp.searchTerm);
       this._auth.redirectToProvider('twitter');
     }
   }
+
   sendNotGoing(id){
     if(this._auth.authStatus) {
       this._log['log']('sendNotGoing(id)', id);
@@ -111,9 +129,21 @@ export class SearchComponent implements OnInit {
           });
         });
     } else {
+      this.setCookie('notgoing', id); // Shouldn't be possible, but just in case
+      this.setCookie('search', this._yelp.searchTerm);
       this._auth.redirectToProvider('twitter');
     }
   }
 
+  getCookie(key: string){
+    return this._cookie.get(key);
+  }
 
+  setCookie(key: string, value: string){
+    return this._cookie.put(key, value);
+  }
+
+  removeCookie(key: string){
+    return this._cookie.remove(key);
+  }
 }
