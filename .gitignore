@@ -35,4 +35,5 @@ testem.log
 Thumbs.db
 
 yelp.api
+*environment.ts
 *.env.js
