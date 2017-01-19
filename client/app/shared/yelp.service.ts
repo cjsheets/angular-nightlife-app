@@ -10,7 +10,8 @@ import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 
-var env = require('../../environments/local.env.js'); 
+var env = require('../../environments/production.env.js') ||
+  require('../../environments/production.js'); 
 
 @Injectable()
 export class YelpService {
