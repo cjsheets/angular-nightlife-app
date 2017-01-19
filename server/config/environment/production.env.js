@@ -33,12 +33,12 @@ module.exports = {
   facebook : {
     client_id         : process.env.FACEBOOK_ID,
     client_secret     : process.env.FACEBOOK_SECRET,
-    callback          : 'http://angular-nightlife.herokuapp.com/auth/facebook/callback'
+    callback          : 'https://angular-nightlife.herokuapp.com/auth/facebook/callback'
   },
   twitter : {
     consumer_key      : process.env.TWITTER_KEY,
     consumer_secret   : process.env.TWITTER_SECRET,
-    callback          : 'http://angular-nightlife.herokuapp.com/auth/twitter/callback'
+    callback          : 'https://angular-nightlife.herokuapp.com/auth/twitter/callback'
   },
 
   google : {

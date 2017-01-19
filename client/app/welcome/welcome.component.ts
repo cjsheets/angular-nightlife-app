@@ -28,6 +28,10 @@ export class WelcomeComponent implements OnInit {
       console.log('found a cookie', lastSearch)
       this.removeCookie('search');
       this.search({location: lastSearch});
+    } else {
+      this.removeCookie('search');
+      this.removeCookie('going');
+      this.removeCookie('notgoing');
     }
   }
 

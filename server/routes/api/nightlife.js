@@ -1,7 +1,7 @@
 /* -----------------------------------|
- *|  Router  ::  API
+ *|  Router  ::  API/Nightlife
  *|
- *|  Handles any routes delivered to /api/...
+ *|  Handles any routes delivered to /api/nightlife...
  */
 var express     = require('express');
 var passport    = require('passport');

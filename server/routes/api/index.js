@@ -11,12 +11,11 @@ var router      = express.Router()
 
 // Import all other route modules
 router.use('/nightlife', require('./nightlife'));
+router.use('/proxy', require('./proxy'));
 
 // User is authenticated
 router.get('/authenticated', authHelper.isAuth, function(req, res, next) {
   res.json({"authenticated": true});
 });
 
-
-debug('Routes initialized successfully');
 module.exports = router;

@@ -44,4 +44,6 @@ To get more help on the `angular-cli` use `ng --help` or go check out the [Angul
 * different connect.session() MemoryStore solution
 * disable logging in production
 * investigate this._log undefined
+* move token to server
+* handle http:// (not s) visitors
 
