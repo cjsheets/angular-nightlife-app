@@ -30,7 +30,7 @@
   <router-outlet></router-outlet>
 
 </div>
-  <!--Debugging -->
+  <!--Debugging
 <div class="container-fluid" style="background: #FFFFFF;">
   <div class="row">
     <div class="col-sm">
@@ -66,7 +66,7 @@
       </button>
     </div>
   </div>
-</div>
+</div> -->
 
 <footer class="text-center">
   <!-- https://www.flickr.com/photos/lennykphotography/17390996656/ -->
@@ -78,15 +78,28 @@
 
 <template #content let-c="close" let-d="dismiss" ngbModalContainer>
   <div class="modal-header">
-    <h5 class="modal-title">Angular Voting - Login</h5>
+    <h5 class="modal-title">About :: Angular Nightlife</h5>
     <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
-The Body
+
+    <p>Angular Nightlife is an Angular 2 application built for educational and demonstration purposes as part of the
+      FreeCodeCamp Fullstack curriculum. The full source code is 
+      <a href="https://github.com/cjsheets/angular-nightlife-app">available here.</a>Objectives include:</p>
+      <ul>
+        <li>User Story: As an unauthenticated user, I can view all bars in my area.</li>
+        <li>User Story: As an authenticated user, I can add myself to a bar to indicate I am going there tonight.</li>
+        <li>User Story: As an authenticated user, I can remove myself from a bar if I no longer want to go there.</li>
+        <li>User Story: As an unauthenticated user, when I login I should not have to search again.</li>
+      </ul>
+    <p>By leveraging a Node.js backend (deployed on Heroku) this application interfaces with Yelps API to provide users
+      with a rudimentary means of coordinating their nightlife activities.</p>
+      
+    <p>Data from sessions is stored in a MongoDB collection at mLab.</p>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-md btn-outline-secondary" (click)="c('Close click')">Cancel</button>
+    <button type="button" class="btn btn-md btn-outline-secondary" (click)="c('Close click')">Close</button>
   </div>
 </template>

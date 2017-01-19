@@ -17,10 +17,10 @@
                     <span class="badge badge-danger" *ngIf="brick.is_closed">Closed</span>
                   </div>
                     <div class="col-4 brick-text brick-info">Rating:</div>
-                    <div class="col-8 brick-text"><b>{{brick.rating}}</b> starts on <a href="{{brick.url}}">Yelp</a>
+                    <div class="col-8 brick-text"><b>{{brick.rating}}</b> starts on <a href="{{brick.url}}" target="_blank">Yelp</a>
                     </div>
                   <div class="col-4 brick-text brick-info">Directions:</div>
-                  <div class="col-8 brick-text"><a [href]="brick.google_url">Google Maps</a>
+                  <div class="col-8 brick-text"><a [href]="brick.google_url" target="_blank">Google Maps</a>
                   </div>
                 </div>
               </div>

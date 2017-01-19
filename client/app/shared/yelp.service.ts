@@ -14,7 +14,7 @@ var env = require('../../environments/local.env.js');
 
 @Injectable()
 export class YelpService {
-    private apiEndpoint = 'https://api.yelp.com/v3/businesses/search?limit=10&category_filter=bars&location=';
+    private apiEndpoint = 'https://api.yelp.com/v3/businesses/search?limit=20&category_filter=bars&location=';
 //    private apiEndpoint = '/assets/api/query.json';
     public searchTerm: string = '';
     public searchResult$: ReplaySubject<{}> = new ReplaySubject(1);

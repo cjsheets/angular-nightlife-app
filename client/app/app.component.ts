@@ -41,6 +41,12 @@ export class AppComponent implements OnInit, OnDestroy {
     for(let sub of this.subs) sub.unsubscribe();
   }
 
+  search(values){ // Hacky to have search function in two components.
+    this._log['log']('search(): ', values);
+    this._yelp.getBusinesses(values.location);
+    this._router.navigate(['/nl/search']);
+  }
+
   checkLoggedIn() {
     this._auth.isLoggedIn();
   }
