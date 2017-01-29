@@ -10,7 +10,7 @@ A demo version of this app is deployed at: [https://angular-nightlife.herokuapp.
 
 ![](client/assets/image/app-screenshot.png?raw=true)
 
-Part of the **Free Code Camp** cirriculum based on the following user stories:
+Part of the [FreeCodeCamp](https://www.freecodecamp.com/cjsheets) cirriculum based on the following user stories:
 
 * As an unauthenticated user, I can view all bars in my area.
 * As an authenticated user, I can add myself to a bar to indicate I am going there tonight.
@@ -75,15 +75,6 @@ ng build
 
 Navigate to `http://localhost:5000`
 
-## Development server
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
-
-
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
-
 ## Technology Stack
 
 This package contains:
@@ -91,15 +82,15 @@ This package contains:
 | Front-End | Back-End |
 | ------- | ------- |
 | Angular v2.x | Node.js |
-| Meteor.js | MongoDB |
-| MiniMongo |  |
-| RxJS |  |
-| HTML5/SCSS |  |
+| Meteor.js | Express |
+| RxJS | Passport |
+| HTML5/SCSS | Mongoose |
+| Webpack | MongoDB |
 
 | Both | 
 | ------- |
 | Typescript |
-| Mocha/Chai | 
+| Karma/Protractor | 
 
 ### Testing
 
