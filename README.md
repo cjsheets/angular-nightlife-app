@@ -10,8 +10,7 @@ A demo version of this app is deployed at: [https://angular-nightlife.herokuapp.
 
 ![](client/assets/image/app-screenshot.png?raw=true)
 
-This project was built as part of the Free Code Camp cirriculum based 
-on the following user stories:
+Part of the **Free Code Camp** cirriculum based on the following user stories:
 
 * As an unauthenticated user, I can view all bars in my area.
 * As an authenticated user, I can add myself to a bar to indicate I am going there tonight.
@@ -60,14 +59,21 @@ First, start the Node.js server in development mode:
 npm run express-dev
 ```
 
-Then build and run the client:
+For client development, use angular-cli to launch the app:
 
 ```
-npm start
+ng serve
 ```
 
-Navigate to `http://localhost:3000`
+Navigate to `http://localhost:4200`
 
+For server development, build the client to `/dist`:
+
+```
+ng build
+```
+
+Navigate to `http://localhost:5000`
 
 ## Development server
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
