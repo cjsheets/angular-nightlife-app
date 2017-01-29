@@ -82,9 +82,8 @@ This package contains:
 | Front-End | Back-End |
 | ------- | ------- |
 | Angular v2.x | Node.js |
-| Meteor.js | Express |
-| RxJS | Passport |
-| HTML5/SCSS | Mongoose |
+| RxJS | Express |
+| HTML5/CSS | Passport |
 | Webpack | MongoDB |
 
 | Both | 
